@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal", "AuctionPortal\AuctionPortal.csproj", "{30512211-3606-4AE2-B454-D2C68EA5991D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F79871BF-351D-4897-A607-1C24CB9B4BF9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F1EAA6A6-5201-49A2-9858-E6C5D1C39AAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.BusinessLayer", "AuctionPortal.BusinessLayer\AuctionPortal.BusinessLayer.csproj", "{B1EE5CE7-E0C5-41A6-9CE7-A3A866ADA232}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.DataAccessLayer.EntityFramework", "AuctionPortal.DataAccessLayer.EntityFramework\AuctionPortal.DataAccessLayer.EntityFramework.csproj", "{A3B0D56C-6907-45E0-8EEE-F0BCB28F2D78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.DataAccessLayer.PetaPoco", "AuctionPortal.DataAccessLayer.PetaPoco\AuctionPortal.DataAccessLayer.PetaPoco.csproj", "{2D7CDBCD-111C-4F2E-BB27-9B668A98D5AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.Infrastructure", "AuctionPortal.Infrastructure\AuctionPortal.Infrastructure.csproj", "{F19640CB-3D9E-4CED-B5C8-3A0021DA8712}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.Infrastructure.EntityFramework", "AuctionPortal.Infrastructure.EntityFramework\AuctionPortal.Infrastructure.EntityFramework.csproj", "{AF8BC008-437F-42B2-963B-43554B775CCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.Infrastructure.PetaPoco", "AuctionPortal.Infrastructure.PetaPoco\AuctionPortal.Infrastructure.PetaPoco.csproj", "{4695686C-17F3-4834-BD44-A542C039D837}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionPortal.DataAccessLayer.EntityFramework.Tests", "AuctionPortal.DataAccessLayer.EntityFramework.Tests\AuctionPortal.DataAccessLayer.EntityFramework.Tests.csproj", "{1239DCB0-CB20-4F44-9D91-5E2CA71ED050}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30512211-3606-4AE2-B454-D2C68EA5991D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30512211-3606-4AE2-B454-D2C68EA5991D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30512211-3606-4AE2-B454-D2C68EA5991D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30512211-3606-4AE2-B454-D2C68EA5991D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1EE5CE7-E0C5-41A6-9CE7-A3A866ADA232}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1EE5CE7-E0C5-41A6-9CE7-A3A866ADA232}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1EE5CE7-E0C5-41A6-9CE7-A3A866ADA232}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1EE5CE7-E0C5-41A6-9CE7-A3A866ADA232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B0D56C-6907-45E0-8EEE-F0BCB28F2D78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B0D56C-6907-45E0-8EEE-F0BCB28F2D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B0D56C-6907-45E0-8EEE-F0BCB28F2D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B0D56C-6907-45E0-8EEE-F0BCB28F2D78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7CDBCD-111C-4F2E-BB27-9B668A98D5AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7CDBCD-111C-4F2E-BB27-9B668A98D5AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7CDBCD-111C-4F2E-BB27-9B668A98D5AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7CDBCD-111C-4F2E-BB27-9B668A98D5AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19640CB-3D9E-4CED-B5C8-3A0021DA8712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19640CB-3D9E-4CED-B5C8-3A0021DA8712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19640CB-3D9E-4CED-B5C8-3A0021DA8712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19640CB-3D9E-4CED-B5C8-3A0021DA8712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8BC008-437F-42B2-963B-43554B775CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8BC008-437F-42B2-963B-43554B775CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8BC008-437F-42B2-963B-43554B775CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8BC008-437F-42B2-963B-43554B775CCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4695686C-17F3-4834-BD44-A542C039D837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4695686C-17F3-4834-BD44-A542C039D837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4695686C-17F3-4834-BD44-A542C039D837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4695686C-17F3-4834-BD44-A542C039D837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1239DCB0-CB20-4F44-9D91-5E2CA71ED050}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1239DCB0-CB20-4F44-9D91-5E2CA71ED050}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1239DCB0-CB20-4F44-9D91-5E2CA71ED050}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1239DCB0-CB20-4F44-9D91-5E2CA71ED050}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F19640CB-3D9E-4CED-B5C8-3A0021DA8712} = {F79871BF-351D-4897-A607-1C24CB9B4BF9}
+		{AF8BC008-437F-42B2-963B-43554B775CCC} = {F79871BF-351D-4897-A607-1C24CB9B4BF9}
+		{4695686C-17F3-4834-BD44-A542C039D837} = {F79871BF-351D-4897-A607-1C24CB9B4BF9}
+		{1239DCB0-CB20-4F44-9D91-5E2CA71ED050} = {F1EAA6A6-5201-49A2-9858-E6C5D1C39AAC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F290DA15-8BD7-44D4-B2A7-1184C2360470}
+	EndGlobalSection
+EndGlobal
