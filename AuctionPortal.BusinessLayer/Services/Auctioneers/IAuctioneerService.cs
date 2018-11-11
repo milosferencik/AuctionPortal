@@ -1,6 +1,7 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
+using AuctionPortal.DataAccessLayer.EntityFramework.Entities;
 using System;
 using System.Threading.Tasks;
 
@@ -9,11 +10,11 @@ namespace AuctionPortal.BusinessLayer.Services.Auctioneers
     public interface IAuctioneerService
     {
         /// <summary>
-        /// Gets customer with given email address
+        /// Gets auctioneer with given email address
         /// </summary>
         /// <param name="email">email</param>
-        /// <returns>Customer with given email address</returns>
-        Task<AuctioneerDto> GetCustomerAccordingToEmailAsync(string email);
+        /// <returns>Auctioneer with given email address</returns>
+        Task<AuctioneerDto> GetAuctioneerAccordingToEmailAsync(string email);
 
         /// <summary>
         /// Gets DTO representing the entity according to ID
@@ -22,6 +23,13 @@ namespace AuctionPortal.BusinessLayer.Services.Auctioneers
         /// <param name="withIncludes">include all entity complex types</param>
         /// <returns>The DTO representing the entity</returns>
         Task<AuctioneerDto> GetAsync(Guid entityId, bool withIncludes = true);
+
+        /// <summary>
+        /// get auctioneer with id
+        /// </summary>
+        /// <param name="entityId">auctioneer id</param>
+        /// <returns>auctioneer with id</returns>
+        Task<Auctioneer> GetAuctioneerEntity(Guid entityId);
 
         /// <summary>
         /// Creates new entity

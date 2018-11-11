@@ -3,8 +3,6 @@ using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AuctionPortal.BusinessLayer.Services.Products
@@ -32,6 +30,13 @@ namespace AuctionPortal.BusinessLayer.Services.Products
         /// <param name="name">product name</param>
         /// <returns>product with given name</returns>
         Task<ProductDto> GetProductByNameAsync(string name);
+
+        /// <summary>
+        /// gets all products for one seller
+        /// </summary>
+        /// <param name="SellerId">seller id</param>
+        /// <returns>all products of one seller</returns>
+        Task<IList<ProductDto>> GetAllProductsWithGivenSellerId(Guid SellerId);
 
         /// <summary>
         /// Creates new entity

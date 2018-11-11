@@ -10,5 +10,7 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects.Filters
         public string[] CategoryNames { get; set; }
 
         public string SearchedName { get; set; }
+
+        public Guid SellerId { get; set; }
     }
 }

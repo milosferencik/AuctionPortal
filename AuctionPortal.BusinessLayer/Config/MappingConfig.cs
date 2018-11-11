@@ -28,6 +28,8 @@ namespace AuctionPortal.BusinessLayer.Config
             config.CreateMap<Auctioneer, AuctioneerDto>().ReverseMap();
             config.CreateMap<Bid, BidDto>().ReverseMap();
             config.CreateMap<Review, ReviewDto>().ReverseMap();
+            config.CreateMap<User,UserCreateDto>().ReverseMap();
+        
         }
     }
 }

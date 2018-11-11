@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AuctionPortal.BusinessLayer.DataTransferObjects;
@@ -43,6 +44,17 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
         {
             var queryResult = await Query.ExecuteQuery(new BidFilterDto { ProductId = productId });
             return queryResult.Items.OrderByDescending(bid => bid.Price).FirstOrDefault();
+        }
+
+        public override void DeleteProduct(Guid entityId)
+        {
+            throw new NotSupportedException("Bid cannot be deleted");
+        }
+
+        public async Task<IList<BidDto>> GetAllBidsForUser(Guid userId)
+        {
+            var queryResult = await Query.ExecuteQuery(new BidFilterDto { AuctioneerId = userId });
+            return queryResult.Items.ToList();
         }
     }
 }

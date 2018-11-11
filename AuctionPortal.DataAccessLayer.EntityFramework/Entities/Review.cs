@@ -16,12 +16,18 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         [ForeignKey(nameof(Reviewer))]
         public Guid ReviewerId { get; set; }
 
+        /// <summary>
+        /// Person that creates review.
+        /// </summary>
         public virtual Auctioneer Reviewer { get; set; }
 
-        [ForeignKey(nameof(Reviewee))]
-        public Guid? RevieweeId { get; set; }
+        [ForeignKey(nameof(Reviewed))]
+        public Guid ReviewedId { get; set; }
 
-        public virtual Auctioneer Reviewee { get; set; }
+        /// <summary>
+        /// Person that is reviewed.
+        /// </summary>
+        public virtual Auctioneer Reviewed { get; set; }
 
         [Required]
         [Range(0, 5)]

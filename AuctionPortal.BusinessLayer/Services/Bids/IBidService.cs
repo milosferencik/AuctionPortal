@@ -1,5 +1,6 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AuctionPortal.BusinessLayer.Services.Bids
@@ -25,5 +26,7 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
         /// </summary>
         /// <param name="entityDto">entity details</param>
         Guid Create(BidDto entityDto);
+
+        Task<IList<BidDto>> GetAllBidsForUser(Guid userId);
     }
 }

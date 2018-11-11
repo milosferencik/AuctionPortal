@@ -10,5 +10,7 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects.Filters
     public class BidFilterDto : FilterDtoBase
     {
         public Guid ProductId { get; set; }
+
+        public Guid AuctioneerId { get; set; }
     }
 }

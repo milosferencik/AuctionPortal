@@ -19,5 +19,7 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
 
         public string Info { get; set; }
 
+        public double Rating { get; set; }
+
     }
 }

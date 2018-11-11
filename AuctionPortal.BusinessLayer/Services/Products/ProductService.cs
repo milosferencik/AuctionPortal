@@ -8,6 +8,7 @@ using AuctionPortal.Infrastructure;
 using AuctionPortal.Infrastructure.Query;
 using AutoMapper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,6 +43,12 @@ namespace AuctionPortal.BusinessLayer.Services.Products
         public async Task<QueryResultDto<ProductDto, ProductFilterDto>> ListProductsAsync(ProductFilterDto filter)
         {
             return await Query.ExecuteQuery(filter);
+        }
+
+        public async Task<IList<ProductDto>> GetAllProductsWithGivenSellerId(Guid SellerId)
+        {
+            var queryResult = await Query.ExecuteQuery(new ProductFilterDto { SellerId = SellerId });
+            return queryResult.Items.Where(x => x.ValidTo >= DateTime.Now).ToList();
         }
     }
 }

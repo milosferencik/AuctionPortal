@@ -10,9 +10,9 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
 
         public AuctioneerDto Reviewer { get; set; }
 
-        public Guid RevieweeId { get; set; }
+        public Guid ReviewedId { get; set; }
 
-        public AuctioneerDto Reviewee { get; set; }
+        public AuctioneerDto Reviewed { get; set; }
 
         [Range(0, 5)]
         public int Rating { get; set; }

@@ -6,6 +6,8 @@ using AuctionPortal.Infrastructure.Query;
 using AuctionPortal.Infrastructure.Query.Predicates;
 using AutoMapper;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AuctionPortal.BusinessLayer.QueryObjects
 {
@@ -15,11 +17,45 @@ namespace AuctionPortal.BusinessLayer.QueryObjects
 
         protected override IQuery<Bid> ApplyWhereClause(IQuery<Bid> query, BidFilterDto filter)
         {
-            if (filter.ProductId.Equals(Guid.Empty))
+            var definedPredicates = new List<IPredicate>();
+            AddIfDefined(FilterProductId(filter), definedPredicates);
+            AddIfDefined(FilterAuctioneerId(filter), definedPredicates);
+            if (definedPredicates.Count == 0)
             {
                 return query;
             }
-            return query.Where(new SimplePredicate(nameof(Bid.ProductId), Infrastructure.Query.Predicates.Operators.ValueComparingOperator.Equal, filter.ProductId));
+            if (definedPredicates.Count == 1)
+            {
+                return query.Where(definedPredicates.First());
+            }
+            var wherePredicate = new CompositePredicate(definedPredicates);
+            return query.Where(wherePredicate);
+        }
+
+        private static void AddIfDefined(IPredicate categoryPredicate, ICollection<IPredicate> definedPredicates)
+        {
+            if (categoryPredicate != null)
+            {
+                definedPredicates.Add(categoryPredicate);
+            }
+        }
+
+        private static SimplePredicate FilterProductId(BidFilterDto filter)
+        {
+            if (filter.ProductId.Equals(Guid.Empty))
+            {
+                return null;
+            }
+            return new SimplePredicate(nameof(Bid.ProductId), Infrastructure.Query.Predicates.Operators.ValueComparingOperator.Equal, filter.ProductId);
+        }
+
+        private static SimplePredicate FilterAuctioneerId(BidFilterDto filter)
+        {
+            if (filter.AuctioneerId.Equals(Guid.Empty))
+            {
+                return null;
+            }
+            return new SimplePredicate(nameof(Bid.BidderId), Infrastructure.Query.Predicates.Operators.ValueComparingOperator.Equal, filter.AuctioneerId);
         }
     }
 }
