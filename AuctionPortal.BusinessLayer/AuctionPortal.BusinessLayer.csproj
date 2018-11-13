@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\BusinessLayerInstaller.cs" />
     <Compile Include="Config\MappingConfig.cs" />
     <Compile Include="DataTransferObjects\AuctioneerDto.cs" />
     <Compile Include="DataTransferObjects\BidDto.cs" />
