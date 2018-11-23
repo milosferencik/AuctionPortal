@@ -11,12 +11,11 @@ using AuctionPortal.Infrastructure.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AuctionPortal.BusinessLayer.Facades
 {
-    class AuctioneerFacade : FacadeBase
+    public class AuctioneerFacade : FacadeBase
     {
         private readonly IAuctioneerService auctioneerService;
         private readonly IUserService userService;
@@ -65,17 +64,43 @@ namespace AuctionPortal.BusinessLayer.Facades
         /// <param name="registrationDto"> new user dto </param>
         /// <param name="success">is successful</param>
         /// <returns>if operation is successful</returns>
-        public Guid RegisterUser(UserCreateDto registrationDto, out bool success)
+        public async Task<Guid> RegisterUser(UserCreateDto registrationDto)
         {
-            if(auctioneerService.GetAuctioneerAccordingToEmailAsync(registrationDto.Auctioneer.Email) != null)
+            using (var uow = UnitOfWorkProvider.Create())
             {
-                success = false;
-                return new Guid();
+                try
+                {
+                    var id = await userService.RegisterUser(registrationDto);
+                    await uow.Commit();
+                    return id;
+                }
+                catch (ArgumentException)
+                {
+                    throw;
+                }
             }
-            userService.Create(registrationDto); 
-            var auctioneerId = auctioneerService.Create(registrationDto.Auctioneer);
-            success = true;
-            return auctioneerId;
+        }
+
+        /// <summary>
+        /// login user
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<(bool success, string isAdmin)> Login(string username, string password)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.AuthorizeUserAsync(username, password);
+            }
+        }
+
+        public async Task<UserDto> GetUserAccordingToUsernameAsync(string username)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.GetAsync(username);
+            }
         }
 
         /// <summary>
@@ -85,31 +110,48 @@ namespace AuctionPortal.BusinessLayer.Facades
         /// <returns>whether user was deleted</returns>
         public async Task<bool> Delete(Guid auctioneerId)
         {
-            if (productService.GetAllProductsWithGivenSellerId(auctioneerId) != null)
+            using (var uow = UnitOfWorkProvider.Create())
             {
-                return false;
+                if (productService.GetAllProductsWithGivenSellerId(auctioneerId) != null)
+                {
+                    return false;
+                }
+                reviewService.DeleteAllReviewsForUser(auctioneerId);
+                var auctioneer = await auctioneerService.GetAuctioneerEntity(auctioneerId);
+                userService.DeleteUser(auctioneer.Id);
+                auctioneerService.DeleteProduct(auctioneerId);
+                await uow.Commit();
+                return true;
             }
-            reviewService.DeleteAllReviewsForUser(auctioneerId);
-            var auctioneer = await auctioneerService.GetAuctioneerEntity(auctioneerId);
-            userService.DeleteProduct(auctioneer.User.Id);
-            auctioneerService.DeleteProduct(auctioneerId);
-            return true;
         }
 
         public async void AddReview(ReviewDto review)
         {
-            reviewService.Create(review);
-            review.Reviewed.Rating = await CalculateRating(review.ReviewedId);
-            await auctioneerService.Update(review.Reviewed);
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                reviewService.Create(review);
+                review.Reviewed.Rating = await CalculateRating(review.ReviewedId);
+                await auctioneerService.Update(review.Reviewed);
+                await uow.Commit();
+            }
         }
 
-        public async void DeleteReview(Guid ReviewId)
+        public async Task<bool> DeleteReview(Guid ReviewId)
         {
-            var review = await reviewService.GetReviewEntity(ReviewId);
-            var reviewed = await auctioneerService.GetAsync(review.ReviewedId);
-            reviewService.DeleteProduct(ReviewId);
-            reviewed.Rating = await CalculateRating(reviewed.Id);
-            await auctioneerService.Update(reviewed);
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                var review = await reviewService.GetReviewEntity(ReviewId);
+                if (review == null)
+                {
+                    return false;
+                }
+                var reviewed = await auctioneerService.GetAsync(review.ReviewedId);
+                reviewService.DeleteProduct(ReviewId);
+                reviewed.Rating = await CalculateRating(reviewed.Id);
+                await auctioneerService.Update(reviewed);
+                await uow.Commit();
+                return true;
+            }
         }
 
         private async Task<double> CalculateRating(Guid auctioneerId)
@@ -120,8 +162,11 @@ namespace AuctionPortal.BusinessLayer.Facades
 
         public async Task<IList<ProductDto>> GetAllActiveProductsUserPutBidsOn(Guid auctioneerId)
         {
-            var bids = await bidService.GetAllBidsForUser(auctioneerId);
-            return  bids.Where(x => x.Product.ValidTo >= DateTime.Now).Select(z => z.Product).Distinct().ToList();
+            using (UnitOfWorkProvider.Create())
+            {
+                var bids = await bidService.GetAllBidsForUser(auctioneerId);
+                return  bids.Where(x => x.Product.ValidTo >= DateTime.Now).Select(z => z.Product).Distinct().ToList();
+            }
         }
     }
 }

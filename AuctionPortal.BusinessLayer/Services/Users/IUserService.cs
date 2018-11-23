@@ -12,24 +12,26 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         /// <param name="entityId">entity ID</param>
         /// <param name="withIncludes">include all entity complex types</param>
         /// <returns>The DTO representing the entity</returns>
-        Task<UserCreateDto> GetAsync(Guid entityId, bool withIncludes = true);
+        Task<UserDto> GetAsync(string name);
 
         /// <summary>
         /// Creates new entity
         /// </summary>
         /// <param name="entityDto">entity details</param>
-        Guid Create(UserCreateDto entityDto);
+        Task<Guid> RegisterUser(UserCreateDto entityDto);
 
         /// <summary>
-        /// Updates entity
+        /// authorize user
         /// </summary>
-        /// <param name="entityDto">entity details</param>
-        Task Update(UserCreateDto entityDto);
+        /// <param name="username"> username</param>
+        /// <param name="password"> user password</param>
+        /// <returns> tuple of bool is successful and is admin </returns>
+        Task<(bool success, string isAdmin)> AuthorizeUserAsync(string username, string password);
 
         /// <summary>
         /// Deletes entity with given Id
         /// </summary>
         /// <param name="entityId">Id of the entity to delete</param>
-        void DeleteProduct(Guid entityId);
+        void DeleteUser(Guid entityId);
     }
 }

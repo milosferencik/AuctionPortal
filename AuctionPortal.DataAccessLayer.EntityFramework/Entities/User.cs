@@ -23,8 +23,6 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         [Required, StringLength(100)]
         public string PasswordHash { get; set; }
 
-        public bool IsAdmin { get; set; }
-
-        public virtual Auctioneer Auctioneer { get; set; }
+        public string IsAdmin { get; set; }
     }
 }

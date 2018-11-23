@@ -5,14 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
 {
-    public class Auctioneer : IEntity
+    public class Auctioneer : User
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public Guid Id { get; set; }
-
-        [NotMapped]
-        public string TableName { get; } = nameof(AuctionPortalDbContext.Auctioneers);
-
         [MaxLength(64)]
         public string FirstName { get; set; }
 
@@ -40,8 +34,5 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         [Range(0.0, 5.0)]
         public double Rating { get; set; }
         
-        [Required]
-        public virtual User User { get; set; }
-
     }
 }

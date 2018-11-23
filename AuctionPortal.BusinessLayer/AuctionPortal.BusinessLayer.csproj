@@ -71,12 +71,15 @@
     <Compile Include="DataTransferObjects\Filters\CategoryFilterDto.cs" />
     <Compile Include="DataTransferObjects\Filters\ProductFilterDto.cs" />
     <Compile Include="DataTransferObjects\Filters\ReviewFilterDto.cs" />
+    <Compile Include="DataTransferObjects\Filters\UserFilterDto.cs" />
     <Compile Include="DataTransferObjects\ProductDto.cs" />
     <Compile Include="DataTransferObjects\ProductListDto.cs" />
     <Compile Include="DataTransferObjects\ReviewDto.cs" />
     <Compile Include="DataTransferObjects\UserCreateDto.cs" />
+    <Compile Include="DataTransferObjects\UserDto.cs" />
     <Compile Include="Facades\AuctioneerFacade.cs" />
     <Compile Include="Facades\Common\FacadeBase.cs" />
+    <Compile Include="Facades\ProductFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryObjects\AuctioneerQueryObject.cs" />
     <Compile Include="QueryObjects\BidQueryObject.cs" />
@@ -84,6 +87,7 @@
     <Compile Include="QueryObjects\Common\QueryObjectBase.cs" />
     <Compile Include="QueryObjects\ProductQueryObject.cs" />
     <Compile Include="QueryObjects\ReviewQueryObject.cs" />
+    <Compile Include="QueryObjects\UserQueryObject.cs" />
     <Compile Include="Services\Auctioneers\AuctioneerService.cs" />
     <Compile Include="Services\Auctioneers\IAuctioneerService.cs" />
     <Compile Include="Services\Bids\BidService.cs" />
