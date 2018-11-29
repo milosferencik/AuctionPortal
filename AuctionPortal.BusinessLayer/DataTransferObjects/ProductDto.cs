@@ -26,10 +26,6 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
 
         public CategoryDto Category { get; set; }
 
-        public Guid LastBidId { get; set; }
-
-        public BidDto LastBid { get; set; }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -58,7 +54,6 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
                 hashCode = (hashCode * 397) ^ SellerId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ProductImgUri?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ CategoryId.GetHashCode();
-                hashCode = (hashCode * 397) ^ LastBidId.GetHashCode();
                 return hashCode;
             }
         }

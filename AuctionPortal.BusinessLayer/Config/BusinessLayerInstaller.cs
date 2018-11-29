@@ -4,6 +4,7 @@ using AuctionPortal.BusinessLayer.Services.Common;
 using AuctionPortal.DataAccessLayer.EntityFramework.Config;
 using AutoMapper;
 using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
@@ -34,6 +35,7 @@ namespace AuctionPortal.BusinessLayer.Config
                     .Instance(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping)))
                     .LifestyleSingleton()
             );
+            container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
         }
     }
 }

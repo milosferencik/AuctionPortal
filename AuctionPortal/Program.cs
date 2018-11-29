@@ -12,7 +12,7 @@ namespace AuctionPortal
         {
             using (var db = new AuctionPortalDbContext())
             {
-                db.Users.Add(new User() { Username = "Milosko", PasswordSalt = "koniec", PasswordHash = "nepoviem", IsAdmin = true});
+                db.Users.Add(new User() { Username = "Milosko", PasswordSalt = "koniec", PasswordHash = "nepoviem"});
 
                 db.SaveChanges();
             }

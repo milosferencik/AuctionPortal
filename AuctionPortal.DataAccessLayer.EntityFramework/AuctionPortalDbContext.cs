@@ -3,7 +3,7 @@ using AuctionPortal.DataAccessLayer.EntityFramework.Entities;
 using AuctionPortal.DataAccessLayer.EntityFramework.Initializers;
 using System.Data.Common;
 using System.Data.Entity;
-
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace AuctionPortal.DataAccessLayer.EntityFramework
 {
@@ -28,5 +28,10 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        //}
     }
 }

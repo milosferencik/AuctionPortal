@@ -2,6 +2,7 @@
 using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.Facades.Common;
+using AuctionPortal.BusinessLayer.Services.Bids;
 using AuctionPortal.BusinessLayer.Services.Categories;
 using AuctionPortal.BusinessLayer.Services.Products;
 using AuctionPortal.Infrastructure.UnitOfWork;
@@ -16,11 +17,13 @@ namespace AuctionPortal.BusinessLayer.Facades
     {
         private readonly ICategoryService categoryService;
         private readonly IProductService productService;
+        private readonly IBidService bidService;
 
-        public ProductFacade(IUnitOfWorkProvider unitOfWorkProvider, ICategoryService categoryService, IProductService productService) : base(unitOfWorkProvider)
+        public ProductFacade(IUnitOfWorkProvider unitOfWorkProvider, ICategoryService categoryService, IProductService productService, IBidService bidService) : base(unitOfWorkProvider)
         {
             this.productService = productService;
             this.categoryService = categoryService;
+            this.bidService = bidService;
         }
 
         /// <summary>
@@ -140,6 +143,20 @@ namespace AuctionPortal.BusinessLayer.Facades
             using (UnitOfWorkProvider.Create())
             {
                 return (await categoryService.ListAllAsync()).Items;
+            }
+        }
+
+        /// <summary>
+        /// gets current price for product
+        /// </summary>
+        /// <param name="id"> product id</param>
+        /// <returns> current price for product</returns>
+        public async Task<decimal> GetCurrentPriceForProduct(Guid id)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var prod = await bidService.GetLastBidForProduct(id);
+                return prod.Price;
             }
         }
     }

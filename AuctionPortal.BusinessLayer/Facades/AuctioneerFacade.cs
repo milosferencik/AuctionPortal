@@ -23,7 +23,7 @@ namespace AuctionPortal.BusinessLayer.Facades
         private readonly IReviewService reviewService;
         private readonly IBidService bidService;
 
-        protected AuctioneerFacade(IUnitOfWorkProvider unitOfWorkProvider, IAuctioneerService auctioneerService, IProductService productService
+        public AuctioneerFacade(IUnitOfWorkProvider unitOfWorkProvider, IAuctioneerService auctioneerService, IProductService productService
             , IUserService userService, IReviewService reviewService, IBidService bidService) : base(unitOfWorkProvider)
         {
             this.auctioneerService = auctioneerService;
@@ -68,16 +68,9 @@ namespace AuctionPortal.BusinessLayer.Facades
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                try
-                {
-                    var id = await userService.RegisterUser(registrationDto);
-                    await uow.Commit();
-                    return id;
-                }
-                catch (ArgumentException)
-                {
-                    throw;
-                }
+                var id = await userService.RegisterUser(registrationDto);
+                await uow.Commit();
+                return id;
             }
         }
 

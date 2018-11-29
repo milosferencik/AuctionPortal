@@ -23,9 +23,10 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         private readonly QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject;
 
 
-        protected UserService(IMapper mapper, IRepository<Auctioneer> repository) : base(mapper)
+        public UserService(IMapper mapper, IRepository<Auctioneer> repository, QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject) : base(mapper)
         {
             this.repository = repository;
+            this.userQueryObject = userQueryObject;
         }
 
         public async Task<Guid> RegisterUser(UserCreateDto entityDto)

@@ -1,11 +1,9 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
+using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
+using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.DataAccessLayer.EntityFramework.Entities;
+using AuctionPortal.Infrastructure.Query;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AuctionPortal.BusinessLayer.Config
 {
@@ -29,7 +27,15 @@ namespace AuctionPortal.BusinessLayer.Config
             config.CreateMap<Bid, BidDto>().ReverseMap();
             config.CreateMap<Review, ReviewDto>().ReverseMap();
             config.CreateMap<User,UserCreateDto>().ReverseMap();
-        
+            config.CreateMap<Auctioneer, UserCreateDto>().ReverseMap();
+            config.CreateMap<User, UserDto>().ReverseMap();
+
+            config.CreateMap<QueryResult<Product>, QueryResultDto<ProductDto, ProductFilterDto>>();
+            config.CreateMap<QueryResult<Category>, QueryResultDto<CategoryDto, CategoryFilterDto>>();
+            config.CreateMap<QueryResult<User>, QueryResultDto<UserDto, UserFilterDto>>();
+            config.CreateMap<QueryResult<Auctioneer>, QueryResultDto<AuctioneerDto, AuctioneerFilterDto>>();
+            config.CreateMap<QueryResult<Bid>, QueryResultDto<BidDto, BidFilterDto>>();
+
         }
     }
 }
