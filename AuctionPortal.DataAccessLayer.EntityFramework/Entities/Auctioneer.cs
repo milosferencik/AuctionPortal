@@ -11,7 +11,6 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         [MaxLength(64)]
         public string LastName { get; set; }
 
-        [EmailAddress]
         public string Email { get; set; }
 
         [MaxLength(1024)]

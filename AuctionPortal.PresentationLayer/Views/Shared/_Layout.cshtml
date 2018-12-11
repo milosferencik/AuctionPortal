@@ -10,20 +10,35 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Register", "register", "account")</li>
-                    <li>@Html.ActionLink("Login", "login", "account")</li>
-                </ul>
-            </div>
+            <ul class="navbar-collapse collapse">
+                
+
+                @if (Request.IsAuthenticated)
+                {
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user grey"></span> @User.Identity.Name.Split('@')[0] <b class="caret grey"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">Account management</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user grey"></span><b class="caret grey"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">Get started</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Register", "Register", "Account")</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Log in", "Login", "Account")</li>
+                        </ul>
+                    </li>
+
+                }
+            </ul>
         </div>
     </div>
     <div class="container body-content">

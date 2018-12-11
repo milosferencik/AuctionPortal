@@ -59,8 +59,8 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Tests.RepositoryTests
                 ProductImgUri = @"\Content\Images\Products\xiaomi_mi_5.jpeg",
                 MinimalBid = 10,
                 ValidTo = DateTime.Today,
-                SellerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b989"),
-                BuyerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b989")
+                SellerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b988"),
+                BuyerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b988")
             };
 
             using (var uow = unitOfWorkProvider.Create())
@@ -87,8 +87,8 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Tests.RepositoryTests
                 ProductImgUri = @"\Content\Images\Products\samsung_galaxy_J7.jpeg",
                 MinimalBid = 15,
                 ValidTo = new DateTime(2018, 11, 11),
-                SellerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b989"),
-                BuyerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b989")
+                SellerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b988"),
+                BuyerId = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b988")
             };
 
             using (var uow = unitOfWorkProvider.Create())

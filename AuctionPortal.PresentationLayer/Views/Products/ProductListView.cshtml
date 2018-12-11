@@ -1,0 +1,116 @@
+﻿@using System.Web.Mvc.Html
+@model AuctionPortal.PresentationLayer.Models.ProductListViewModel
+@{
+    ViewBag.Title = "ProductListView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section head{
+    @Styles.Render("~/Content/css/tree.css")
+    @Styles.Render("~/Content/css/PagedList.css")
+    @Styles.Render("~/Content/themes/base/jquery-ui.css")
+}
+<div class="panel panel-primary col-md-3 col-sm-4 col-xs-12">
+    <div class="panel-heading panel-head">Categories</div>
+    @using (Html.BeginForm())
+    {
+
+        <div class="tree panel-body">
+            @for (var i = 0; i < Model.Categories.Count; i++)
+            {
+                if (Model.Categories[i].HasParent)
+                {
+                    continue;
+                }
+                <ul>
+                    <li>
+                        <a href="#">
+                            @Html.CheckBoxFor(model => model.Categories[i].IsActive, new { @class = "tree-checkbox parent", @id = @Model.Categories[i].Id })
+                            @Html.HiddenFor(model => model.Categories[i].Id)
+                            @Html.HiddenFor(model => model.Categories[i].Name)
+                            @Html.HiddenFor(model => model.Categories[i].ParentId)
+                            <label for=@i>
+                                @Html.DisplayFor(model => model.Categories[i].Name)
+                            </label>
+                        </a>
+                        <ul>
+                            @for (var j = 0; j < Model.Categories.Count; j++)
+                            {
+                                if (!Model.Categories[j].HasParent || Model.Categories[j].ParentId != Model.Categories[i].Id)
+                                {
+                                    continue;
+                                }
+                                @Html.HiddenFor(model => model.Categories[j].Id)
+                                @Html.HiddenFor(model => model.Categories[j].Name)
+                                @Html.HiddenFor(model => model.Categories[j].ParentId)
+                                <li>
+                                    <a href="#">
+                                        @Html.CheckBoxFor(model => model.Categories[j].IsActive, new { @class = "tree-checkbox node-item", @iid = i + "" + j })
+                                        <label for=@i@j>
+                                            @Html.DisplayFor(model => model.Categories[j].Name)
+                                        </label>
+                                    </a>
+                                </li>
+
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            }
+        </div>
+
+        <div class="form-group text-center">
+            <b>
+                Price: <span id="spanOutput"></span>
+            </b>
+            <div id="slider" class="col-md-8 col-md-offset-2"></div>
+            <input id="txtMin" type="hidden" name="Filter.MinimalPrice" />
+            <input id="txtMax" type="hidden" name="Filter.MaximalPrice" />
+        </div>
+        <br />
+
+
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.Filter.SearchedName, "Product Name", new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Filter.SearchedName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Filter.SearchedName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.Filter.SortCriteria, "Sort by:", new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.Filter.SortCriteria, Model.AllSortCriteria, "Select...", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Filter.SortCriteria, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.Filter.SortAscending, "Ascending", new { @class = "control-label col-md-4" })
+            <div class="col-md-5 col-md-offset-3">
+                @Html.CheckBoxFor(model => model.Filter.SortAscending, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Filter.SortAscending, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div>
+                <input type="button" class="btn btn-danger  col-md-offset-1 col-md-4" value="Clear" onclick="resetRange();location.href = '@Url.Action("ClearFilter", "Products")'" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success col-md-offset-1 col-md-5" id="btnSubmit" type="submit" onclick="saveRange()">Filter </button>
+            </div>
+        </div>
+
+    }
+
+</div>
+<script>function GoToDetail(id) {
+        window.location = "/Products/Details/" + id;
+    }</script>
+@section scripts{
+    @Scripts.Render("~/Scripts/tree.js")
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.js")
+    @Scripts.Render("~/Scripts/slider.js")
+}

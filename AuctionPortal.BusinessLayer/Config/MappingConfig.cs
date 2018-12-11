@@ -13,7 +13,7 @@ namespace AuctionPortal.BusinessLayer.Config
         {
             config.CreateMap<Product, ProductDto>();
             config.CreateMap<ProductDto, Product>().ForMember(dest => dest.Category, opt => opt.Ignore());
-            /*config.CreateMap<Category, CategoryDto>().ForMember(categoryDto => categoryDto.CategoryPath, opts => opts.ResolveUsing(category =>
+            config.CreateMap<Category, CategoryDto>().ForMember(categoryDto => categoryDto.CategoryPath, opts => opts.ResolveUsing(category =>
             {
                 var categoryPath = category.Name;
                 while (category.Parent != null)
@@ -22,7 +22,7 @@ namespace AuctionPortal.BusinessLayer.Config
                     category = category.Parent;
                 }
                 return categoryPath;
-            })).ReverseMap();*/
+            })).ReverseMap();
             config.CreateMap<Auctioneer, AuctioneerDto>().ReverseMap();
             config.CreateMap<Bid, BidDto>().ReverseMap();
             config.CreateMap<Review, ReviewDto>().ReverseMap();
