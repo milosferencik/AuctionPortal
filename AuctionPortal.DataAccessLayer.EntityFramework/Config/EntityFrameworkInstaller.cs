@@ -14,6 +14,7 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Config
     public class EntityFrameworkInstaller : IWindsorInstaller
     {
         internal const string ConnectionString = "Data source=(localdb)\\mssqllocaldb;Database=AuctionPortalDatabaseSample;Trusted_Connection=True;MultipleActiveResultSets=true";
+        //internal const string ConnectionString = "Server=tcp:pv179-ferencik.database.windows.net,1433;Initial Catalog=newestAuctionPortal;Persist Security Info=False;User ID=milosferencik;Password=Kto-to-vie;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
