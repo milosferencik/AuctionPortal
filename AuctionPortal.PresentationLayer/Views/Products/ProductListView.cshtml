@@ -4,11 +4,6 @@
     ViewBag.Title = "ProductListView";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section head{
-    @Styles.Render("~/Content/css/tree.css")
-    @Styles.Render("~/Content/css/PagedList.css")
-    @Styles.Render("~/Content/themes/base/jquery-ui.css")
-}
 <div class="panel panel-primary col-md-3 col-sm-4 col-xs-12">
     <div class="panel-heading panel-head">Categories</div>
     @using (Html.BeginForm())
@@ -106,12 +101,7 @@
     }
 
 </div>
-<script>
+/<script>
     function GoToDetail(id) {
         window.location = "/Products/Details/" + id;
     }</script>
-@section scripts{
-    @Scripts.Render("~/Scripts/tree.js")
-    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.js")
-    @Scripts.Render("~/Scripts/slider.js")
-}

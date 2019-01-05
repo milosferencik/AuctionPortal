@@ -1,5 +1,6 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
+using PagedList;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -11,7 +12,7 @@ namespace AuctionPortal.PresentationLayer.Models
 
         public IList<CategoryDto> Categories { get; set; }
 
-        public IList<ProductDto> Products { get; set; } //IPagedList
+        public IPagedList<ProductDto> Products { get; set; } 
 
         public ProductFilterDto Filter { get; set; }
 

@@ -3,11 +3,11 @@ using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.Facades;
 using AuctionPortal.PresentationLayer.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AuctionPortal.PresentationLayer.Controllers
@@ -35,6 +35,31 @@ namespace AuctionPortal.PresentationLayer.Controllers
             return View("ProductListView", newModel);
         }
 
+        public async Task<ActionResult> Index(int page = 1)
+        {
+            var filter = Session[FilterSessionKey] as ProductFilterDto ?? new ProductFilterDto { PageSize = PageSize };
+            filter.RequestedPageNumber = page;
+            var result = await ProductFacade.GetProductsAsync(filter);
+
+            var categoryTrees = Session[CategoryTreesSessionKey] as IList<CategoryDto>;
+            var model = await InitializeProductListViewModel(result, categoryTrees);
+            return View("ProductListView", model);
+        }
+
+        public ActionResult ClearFilter()
+        {
+            Session[FilterSessionKey] = null;
+            Session[CategoryTreesSessionKey] = null;
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Details(Guid id)
+        {
+            var model = await ProductFacade.GetProductAsync(id);
+            //return View("ProductDetailView", model);
+            return View();
+        }
+
 
 
         #region Helper methods
@@ -49,12 +74,12 @@ namespace AuctionPortal.PresentationLayer.Controllers
         {
             return new ProductListViewModel
             {
-                //Products = new StaticPagedList<ProductDto>(result.Items, result.RequestedPageNumber ?? 1, PageSize, (int)result.TotalItemsCount),
-                Products = new List<ProductDto>(result.Items),
+                Products = new StaticPagedList<ProductDto>(result.Items, result.RequestedPageNumber ?? 1, PageSize, (int)result.TotalItemsCount),
                 Categories = categories ?? await ProductFacade.GetAllCategories() as IList<CategoryDto>,
                 Filter = result.Filter
             };
         }
+    
 
         /// <summary>
         /// Processes category IDs by filtering out unchecked categories

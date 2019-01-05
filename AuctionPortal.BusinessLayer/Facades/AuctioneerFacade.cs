@@ -96,6 +96,15 @@ namespace AuctionPortal.BusinessLayer.Facades
             }
         }
 
+        public async Task<AuctioneerDto> GetAuctioneerAccordingToUsernameAsync(string username)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var user = await userService.GetAsync(username);
+                return await auctioneerService.GetAsync(user.Id);
+            }
+        }
+
         /// <summary>
         /// deletes user
         /// </summary>
@@ -159,6 +168,26 @@ namespace AuctionPortal.BusinessLayer.Facades
             {
                 var bids = await bidService.GetAllBidsForUser(auctioneerId);
                 return  bids.Where(x => x.Product.ValidTo >= DateTime.Now).Select(z => z.Product).Distinct().ToList();
+            }
+        }
+
+        public async Task AddMoneyToAuctioneer(string name, decimal amount)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var auctioneer = await GetAuctioneerAccordingToUsernameAsync(name);
+                auctioneer.Money += amount;
+                await auctioneerService.Update(auctioneer);
+            }
+        }
+
+        public async Task UpdateInfoToAuctioneer(string name, string info)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var auctioneer = await GetAuctioneerAccordingToUsernameAsync(name);
+                auctioneer.Info = info;
+                await auctioneerService.Update(auctioneer);
             }
         }
     }
