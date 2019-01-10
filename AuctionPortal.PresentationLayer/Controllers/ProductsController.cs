@@ -2,13 +2,15 @@
 using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.Facades;
+using AuctionPortal.DataAccessLayer.EntityFramework.Entities;
 using AuctionPortal.PresentationLayer.Models;
-using PagedList;
+using X.PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AuctionPortal.PresentationLayer.Helpers;
 
 namespace AuctionPortal.PresentationLayer.Controllers
 {
@@ -20,7 +22,7 @@ namespace AuctionPortal.PresentationLayer.Controllers
         private const string CategoryTreesSessionKey = "categoryTrees";
 
         public ProductFacade ProductFacade { get; set; }
-
+        public AuctioneerFacade AuctioneerFacade { get; set; }
 
         [HttpPost]
         public async Task<ActionResult> Index(ProductListViewModel model)
@@ -56,11 +58,45 @@ namespace AuctionPortal.PresentationLayer.Controllers
         public async Task<ActionResult> Details(Guid id)
         {
             var model = await ProductFacade.GetProductAsync(id);
-            //return View("ProductDetailView", model);
-            return View();
+            return View("ProductDetailView", model);
         }
 
+        public ActionResult CreateNewProduct()
+        {
+            return View("ProductCreateView");
+        }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateNewProduct(ProductDto productDto)
+        {
+            var seller = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
+            productDto.SellerId = seller.Id;
+            var prodID = await ProductFacade.CreateProductWithCategoryNameAsync(productDto, "mobily");
+            var product = await ProductFacade.GetProductAsync(prodID);
+
+            return View("ProductDetailView", product);
+        }
+
+        [HttpPost]
+        [MultiPostAction(Name = "action", Argument = "createBid")]
+        public async Task<ActionResult> CreateBid(ProductDto productDto)
+        {
+            var bidDto = new BidDto();
+            bidDto.ProductId = productDto.Id;
+            bidDto.Price = productDto.ActualPrice.Value;
+            bidDto.TimeOfBid = DateTime.Now;
+            var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
+            bidDto.BidderId = me.Id;
+            //try
+            //{
+               await ProductFacade.CreateBidAsync(bidDto);
+            //}catch(Exception x)
+            // {
+            //     Console.WriteLine(x.Message);
+            // }
+            var product = await ProductFacade.GetProductAsync(productDto.Id);
+            return View("ProductDetailView", product);
+        }
 
         #region Helper methods
 

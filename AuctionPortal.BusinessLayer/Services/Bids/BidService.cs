@@ -25,15 +25,15 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
 
         public override Guid Create(BidDto entityDto)
         {
-            var price = GetLastBidForProduct(entityDto.ProductId)?.Result.Price ?? entityDto.Product.StartPrice;
+            /*var price = GetLastBidForProduct(entityDto.ProductId)?.Result.Price ?? entityDto.Product.StartPrice;
             if (price + entityDto.Product.MinimalBid > entityDto.Price)
             {
                 throw new ArgumentException("Bid is to small!");
-            }
-            if (entityDto.Bidder.Money < entityDto.Price)
+            }*/
+            /*if (entityDto.Bidder.Money < entityDto.Price)
             {
                 throw new ArgumentException("Don't enough money!");
-            }
+            }*/ //todo
             var entity = Mapper.Map<Bid>(entityDto);
             Repository.Create(entity);
             return entity.Id;

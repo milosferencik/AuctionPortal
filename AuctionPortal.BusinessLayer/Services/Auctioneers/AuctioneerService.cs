@@ -42,5 +42,11 @@ namespace AuctionPortal.BusinessLayer.Services.Auctioneers
             var queryResult = await Query.ExecuteQuery(new AuctioneerFilterDto { Email = email });
             return queryResult.Items.SingleOrDefault();
         }
+
+        public async Task<AuctioneerDto> GetAuctioneerDtoAsync(Guid id)
+        {
+            var auctioneer = await GetAuctioneerEntity(id);
+            return Mapper.Map<AuctioneerDto>(auctioneer);
+        }
     }
 }

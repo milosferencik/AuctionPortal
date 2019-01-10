@@ -12,7 +12,9 @@
             <h3>Welcome back to the best auction portal @(User.Identity.Name)! </h3>
         </p>
         <p class="btn btn-default"> @Html.ActionLink("Show my Profile", "ShowMyProfile", "User")  </p>
-
+        <p class="btn btn-default"> @Html.ActionLink("Create new Product", "CreateNewProduct", "Products")  </p>
+        <p class="btn btn-default"> @Html.ActionLink("Create new category", "Create", "Home")  </p>
+        <p class="btn btn-default"> @Html.ActionLink("Products", "Index", "Products")  </p>
     </div>
     }
     else
@@ -26,6 +28,6 @@
         <p>Please Log in or Register.</p>
         <p class="btn btn-default">  @Html.ActionLink("Log in", "Login", "Account") </p>
         <p class="btn btn-default"> @Html.ActionLink("Register", "Register", "Account")  </p>
-        <p class="btn btn-default"> @Html.ActionLink("Products", "Index", "Products")  </p>
+        
     }
 </div>

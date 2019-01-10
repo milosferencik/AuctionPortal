@@ -1,6 +1,6 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
-using PagedList;
+using X.PagedList;
 using System.Collections.Generic;
 using System.Web.Mvc;
 

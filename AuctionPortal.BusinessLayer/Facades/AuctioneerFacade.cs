@@ -33,6 +33,14 @@ namespace AuctionPortal.BusinessLayer.Facades
             this.bidService = bidService;
         }
 
+        public async Task<AuctioneerDto> GetAuctioneerAsync(Guid id)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await auctioneerService.GetAuctioneerDtoAsync(id);
+            }
+        }
+
         /// <summary>
         /// get auctioneer by email address
         /// </summary>
@@ -173,21 +181,23 @@ namespace AuctionPortal.BusinessLayer.Facades
 
         public async Task AddMoneyToAuctioneer(string name, decimal amount)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 var auctioneer = await GetAuctioneerAccordingToUsernameAsync(name);
                 auctioneer.Money += amount;
                 await auctioneerService.Update(auctioneer);
+                await uow.Commit();
             }
         }
 
         public async Task UpdateInfoToAuctioneer(string name, string info)
         {
-            using (UnitOfWorkProvider.Create())
+            using (var uow = UnitOfWorkProvider.Create())
             {
                 var auctioneer = await GetAuctioneerAccordingToUsernameAsync(name);
                 auctioneer.Info = info;
                 await auctioneerService.Update(auctioneer);
+                await uow.Commit();
             }
         }
     }

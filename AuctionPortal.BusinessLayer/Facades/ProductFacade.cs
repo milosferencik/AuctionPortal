@@ -36,6 +36,8 @@ namespace AuctionPortal.BusinessLayer.Facades
             using (UnitOfWorkProvider.Create())
             {
                 var product = await productService.GetAsync(id);
+                var lastBid = await bidService.GetLastBidForProduct(id);
+                product.ActualPrice = lastBid?.Price ?? product.StartPrice;
                 return product;
             }
         }
@@ -159,5 +161,24 @@ namespace AuctionPortal.BusinessLayer.Facades
                 return prod.Price;
             }
         }
+
+        public async Task CreateCategoryAsync(CategoryDto product)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                categoryService.Create(product);
+                await uow.Commit();
+            }
+        }
+
+        public async Task CreateBidAsync(BidDto bid)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                bidService.Create(bid);
+                await uow.Commit();
+            }
+        }
+
     }
 }

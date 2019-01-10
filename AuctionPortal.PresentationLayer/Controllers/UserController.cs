@@ -26,8 +26,21 @@ namespace AuctionPortal.PresentationLayer.Controllers
         public async Task<ActionResult> AddInfo(AuctioneerDto auctioneer)
         {
             await AuctioneerFacade.UpdateInfoToAuctioneer(User.Identity.Name, auctioneer.Info);
-            var user = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
-            return View("UserInfo", user);
+            return RedirectToAction("ShowMyProfile");
+        }
+
+        [HttpPost]
+        [MultiPostAction(Name = "action", Argument = "addmoney")]
+        public async Task<ActionResult> AddMoney(AuctioneerDto auctioneer)
+        {
+            await AuctioneerFacade.AddMoneyToAuctioneer(User.Identity.Name, auctioneer.Money);
+            return RedirectToAction("ShowMyProfile");
+        }
+
+        public async Task<ActionResult> Details(Guid id)
+        {
+            var model = await AuctioneerFacade.GetAuctioneerAsync(id);
+            return View("UserInfo", model);
         }
     }
 }

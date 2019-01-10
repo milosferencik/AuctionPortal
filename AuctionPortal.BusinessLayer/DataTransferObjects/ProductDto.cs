@@ -12,6 +12,8 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
 
         public decimal StartPrice { get; set; }
 
+        public decimal? ActualPrice { get; set; }
+
         public string Info { get; set; }
 
         public Guid SellerId { get; set; }

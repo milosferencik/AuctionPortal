@@ -54,5 +54,7 @@ namespace AuctionPortal.BusinessLayer.Services.Auctioneers
         /// </summary>
         /// <returns>all available dtos (for given type)</returns>
         Task<QueryResultDto<AuctioneerDto, AuctioneerFilterDto>> ListAllAsync();
+
+        Task<AuctioneerDto> GetAuctioneerDtoAsync(Guid id);
     }
 }

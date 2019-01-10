@@ -14,15 +14,15 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         [NotMapped]
         public string TableName { get; } = nameof(AuctionPortalDbContext.Bids);
 
-        [ForeignKey(nameof(Product))]
+        //[ForeignKey(nameof(Product))]
         public Guid ProductId { get; set; }
 
-        public virtual Product Product { get; set; }
+       // public virtual Product Product { get; set; }
 
-        [ForeignKey(nameof(Bidder))]
+       // [ForeignKey(nameof(Bidder))]
         public Guid BidderId { get; set; }
 
-        public virtual User Bidder { get; set; }
+        //public virtual Auctioneer Bidder { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]

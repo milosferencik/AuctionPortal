@@ -6,7 +6,7 @@
 
 }
 
-<h2>My Profile</h2>
+<h2>Profile</h2>
 
 @using (Html.BeginForm())
 {
@@ -15,11 +15,6 @@
     <div class="row">
         <h5 class="col-md-2 col-md-offset-1">Name:</h5>
         <h5 class="col-md-6">@Model.FirstName @Model.LastName</h5>
-    </div>
-
-    <div class="row">
-        <h5 class="col-md-2 col-md-offset-1">Birth date:</h5>
-        <h5 class="col-md-6">@Model.BirthDate.ToShortDateString()</h5>
     </div>
 
     <div class="row">
@@ -33,30 +28,55 @@
     </div>
 
     <div class="row">
-        <h5 class="col-md-2 col-md-offset-1">Availible money:</h5>
-        <h5 class="col-md-6">@Model.Money</h5>
-    </div>
-
-    <div class="row">
         <h5 class="col-md-2 col-md-offset-1">Additional info:</h5>
         <h5 class="col-md-6">@Model.Info</h5>
     </div>
-
 
     <div class="row">
         <h5 class="col-md-2 col-md-offset-1">Rating:</h5>
         <h5 class="col-md-6">@Model.Rating</h5>
     </div>
 
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Info, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-20">
-            @Html.EditorFor(model => model.Info, new { htmlAttributes = new { @class = "form-control" } })
+    @if (Model.UserName.Equals(User.Identity.Name))
+    {
+        <div class="row">
+            <h5 class="col-md-2 col-md-offset-1">Birth date:</h5>
+            <h5 class="col-md-6">@Model.BirthDate.ToShortDateString()</h5>
         </div>
-    </div>
-    <div class="col-md-offset-2 col-md-20">
-        <input type="submit" value="AddInfo" class="btn btn-default" name="action:addinfo" />
+
+        <div class="row">
+            <h5 class="col-md-2 col-md-offset-1">Availible money:</h5>
+            <h5 class="col-md-6">@Model.Money</h5>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Money, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-20">
+                @Html.EditorFor(model => model.Money, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-20">
+            <input type="submit" value="AddMoney" class="btn btn-default" name="action:addmoney" />
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Info, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-20">
+                @Html.EditorFor(model => model.Info, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-20">
+            <input type="submit" value="AddInfo" class="btn btn-default" name="action:addinfo" />
+        </div>
+    }
+    else
+    {
+
+    }
+    <div>
+        <p class="btn btn-default"> @Html.ActionLink("Back to Homepage", "Index", "Home") </p>
     </div>
 </div>
 }

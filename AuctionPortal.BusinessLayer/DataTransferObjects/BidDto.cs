@@ -8,11 +8,11 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
     {
         public Guid ProductId { get; set; }
 
-        public ProductDto Product { get; set; }
+        public virtual ProductDto Product { get; set; }
 
         public Guid BidderId { get; set; }
 
-        public AuctioneerDto Bidder { get; set; }
+        public virtual AuctioneerDto Bidder { get; set; }
 
         [Range(0, int.MaxValue)]
         public decimal Price { get; set; }
