@@ -1,4 +1,6 @@
 ﻿using AuctionPortal.BusinessLayer.Facades;
+using AuctionPortal.PresentationLayer.Helpers;
+using AuctionPortal.PresentationLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,26 @@ namespace AuctionPortal.PresentationLayer.Controllers
                 return View("NotAdmin");
             }
             return View("ShowOptions");
+        }
+
+        [HttpPost]
+        [MultiPostAction(Name = "action", Argument = "deleteUser")]
+        public async Task<ActionResult> DeleteUser(AdminModel model)
+        {
+            try
+            {
+                var auctioneer = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(model.Name);
+                bool successful = await AuctioneerFacade.Delete(auctioneer.Id);
+                if (!successful)
+                {
+                    return View("Error", new ErrorModel { Message = "You can't delete user which is still selling products." });
+                }
+                return View("OperationSuccesful");
+
+            } catch (NullReferenceException)
+            {
+                return View("Error", new ErrorModel { Message = "User doesn't exist." });
+            }
         }
     }
 }

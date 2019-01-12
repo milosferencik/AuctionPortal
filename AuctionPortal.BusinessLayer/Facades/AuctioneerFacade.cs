@@ -122,14 +122,14 @@ namespace AuctionPortal.BusinessLayer.Facades
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                if (productService.GetAllProductsWithGivenSellerId(auctioneerId) != null)
+                /*if (productService.GetAllProductsWithGivenSellerId(auctioneerId) != null)
                 {
                     return false;
-                }
-                reviewService.DeleteAllReviewsForUser(auctioneerId);
+                }*/
+                //reviewService.DeleteAllReviewsForUser(auctioneerId);
                 var auctioneer = await auctioneerService.GetAuctioneerEntity(auctioneerId);
                 userService.DeleteUser(auctioneer.Id);
-                auctioneerService.DeleteProduct(auctioneerId);
+                //auctioneerService.DeleteProduct(auctioneerId);
                 await uow.Commit();
                 return true;
             }

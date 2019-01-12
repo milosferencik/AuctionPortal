@@ -172,6 +172,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MultiPostActionAttribute.cs" />
+    <Compile Include="Models\AdminModel.cs" />
+    <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProductListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -227,6 +229,7 @@
     <Content Include="Views\Shared\NotLogged.cshtml" />
     <Content Include="Views\Admin\NotAdmin.cshtml" />
     <Content Include="Views\Admin\ShowOptions.cshtml" />
+    <Content Include="Views\Shared\OperationSuccesful.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

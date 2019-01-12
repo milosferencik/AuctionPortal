@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model AuctionPortal.PresentationLayer.Models.ErrorModel
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -6,8 +8,15 @@
 </head>
 <body>
     <hgroup>
-        <h1>Error.</h1>
         <h2>An error occurred while processing your request.</h2>
+        <h3>
+            Error message:
+            @Model.Message
+        </h3>
     </hgroup>
+
+    <div>
+        <p class="btn btn-default"> @Html.ActionLink("Back to Homepage", "Index", "Home") </p>
+    </div>
 </body>
 </html>

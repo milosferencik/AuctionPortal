@@ -89,13 +89,13 @@ namespace AuctionPortal.PresentationLayer.Controllers
             };
             var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
             bidDto.BidderId = me.Id;
-            //try
-            //{
+            try
+            {
                await ProductFacade.CreateBidAsync(bidDto);
-            //}catch(Exception x)
-            // {
-            //     Console.WriteLine(x.Message);
-            // }
+            }catch(Exception )
+            {
+                return View("Error", new ErrorModel { Message = "Unknown error." });
+            }
             var product = await ProductFacade.GetProductAsync(productDto.Id);
             return View("ProductDetailView", product);
         }
