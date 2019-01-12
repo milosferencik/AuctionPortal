@@ -37,6 +37,7 @@ namespace AuctionPortal.BusinessLayer.Services.Users
             {
                 throw new ArgumentException("User already exists");
             }
+            auctioneer.IsAdmin = false;
 
             var password = CreateHash(entityDto.Password);
             auctioneer.PasswordHash = password.Item1;
@@ -46,13 +47,13 @@ namespace AuctionPortal.BusinessLayer.Services.Users
             return auctioneer.Id;
         }
 
-        public async Task<(bool success, string isAdmin)> AuthorizeUserAsync(string username, string password)
+        public async Task<(bool success, bool isAdmin)> AuthorizeUserAsync(string username, string password)
         {
             var userResult = await userQueryObject.ExecuteQuery(new UserFilterDto { Username = username });
             var user = userResult.Items.SingleOrDefault();
 
             var succ = user != null && VerifyHashedPassword(user.PasswordHash, user.PasswordSalt, password);
-            var isAdmin = user?.IsAdmin?? "";
+            var isAdmin = user?.IsAdmin?? false;
             return (succ, isAdmin);
 
         }

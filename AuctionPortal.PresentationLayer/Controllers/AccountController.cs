@@ -48,11 +48,11 @@ namespace AuctionPortal.PresentationLayer.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
-            (bool success, string isAdmin) = await AuctioneerFacade.Login(model.Username, model.Password);
+            (bool success, bool isAdmin) = await AuctioneerFacade.Login(model.Username, model.Password);
             if (success)
             {
                 var authTicket = new FormsAuthenticationTicket(1, model.Username, DateTime.Now,
-                    DateTime.Now.AddMinutes(30),false, isAdmin);
+                    DateTime.Now.AddMinutes(30),false, isAdmin.ToString());
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Response.Cookies.Add(authCookie);

@@ -88,7 +88,7 @@ namespace AuctionPortal.BusinessLayer.Facades
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<(bool success, string isAdmin)> Login(string username, string password)
+        public async Task<(bool success, bool isAdmin)> Login(string username, string password)
         {
             using (UnitOfWorkProvider.Create())
             {

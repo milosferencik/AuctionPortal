@@ -81,10 +81,12 @@ namespace AuctionPortal.PresentationLayer.Controllers
         [MultiPostAction(Name = "action", Argument = "createBid")]
         public async Task<ActionResult> CreateBid(ProductDto productDto)
         {
-            var bidDto = new BidDto();
-            bidDto.ProductId = productDto.Id;
-            bidDto.Price = productDto.ActualPrice.Value;
-            bidDto.TimeOfBid = DateTime.Now;
+            var bidDto = new BidDto
+            {
+                ProductId = productDto.Id,
+                Price = productDto.ActualPrice.Value,
+                TimeOfBid = DateTime.Now
+            };
             var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
             bidDto.BidderId = me.Id;
             //try

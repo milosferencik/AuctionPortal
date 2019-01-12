@@ -26,7 +26,7 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         /// <param name="username"> username</param>
         /// <param name="password"> user password</param>
         /// <returns> tuple of bool is successful and is admin </returns>
-        Task<(bool success, string isAdmin)> AuthorizeUserAsync(string username, string password);
+        Task<(bool success, bool isAdmin)> AuthorizeUserAsync(string username, string password);
 
         /// <summary>
         /// Deletes entity with given Id
