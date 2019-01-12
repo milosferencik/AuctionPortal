@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "ShowOptions";
+}
+
+<h2>Admin Options</h2>
+
+@using (Html.BeginForm())
+{
+    if (!Request.IsAuthenticated)
+    {
+        Response.Redirect("~/User/NotLoggedIn");
+    }
+    @Html.AntiForgeryToken()
+    
+}

@@ -200,5 +200,14 @@ namespace AuctionPortal.BusinessLayer.Facades
                 await uow.Commit();
             }
         }
+
+        public async Task UpdateAuctioneer(AuctioneerDto auctioneer)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                await auctioneerService.Update(auctioneer);
+                await uow.Commit();
+            }
+        }
     }
 }

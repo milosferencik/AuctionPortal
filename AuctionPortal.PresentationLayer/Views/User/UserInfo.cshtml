@@ -37,6 +37,11 @@
         <h5 class="col-md-6">@Model.Rating</h5>
     </div>
 
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">IsAdmin:</h5>
+        <h5 class="col-md-6">@Model.IsAdmin</h5>
+    </div>
+
     @if (Model.UserName.Equals(User.Identity.Name))
     {
         <div class="row">

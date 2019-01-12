@@ -9,6 +9,10 @@
     <div class="panel-heading panel-head">Categories</div>
     @using (Html.BeginForm())
     {
+        if (!Request.IsAuthenticated)
+        {
+            Response.Redirect("~/User/NotLoggedIn");
+        }
 
         <div class="tree panel-body">
             @for (var i = 0; i < Model.Categories.Count; i++)

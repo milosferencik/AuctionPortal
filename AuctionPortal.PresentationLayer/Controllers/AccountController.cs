@@ -79,6 +79,14 @@ namespace AuctionPortal.PresentationLayer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        public async Task<ActionResult> BecomeAdmin()
+        {
+            var name = User.Identity.Name;
+            var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(name);
+            me.IsAdmin = true;
+            await AuctioneerFacade.UpdateAuctioneer(me);
+            return RedirectToAction("Index", "Home");
+        }
+        
     }
 }

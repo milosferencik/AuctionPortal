@@ -8,6 +8,10 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    if (!Request.IsAuthenticated)
+    {
+        Response.Redirect("~/User/NotLoggedIn");
+    }
 
     <div class="form-horizontal">
         <hr />

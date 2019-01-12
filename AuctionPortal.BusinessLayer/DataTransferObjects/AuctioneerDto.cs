@@ -23,5 +23,6 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
 
         public double Rating { get; set; }
 
+        public bool IsAdmin { get; set; }
     }
 }

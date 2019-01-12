@@ -33,5 +33,6 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         /// </summary>
         /// <param name="entityId">Id of the entity to delete</param>
         void DeleteUser(Guid entityId);
+
     }
 }

@@ -39,8 +39,17 @@ namespace AuctionPortal.PresentationLayer.Controllers
 
         public async Task<ActionResult> Details(Guid id)
         {
+            if(id == null)
+            {
+                NotLoggedIn();
+            }
             var model = await AuctioneerFacade.GetAuctioneerAsync(id);
             return View("UserInfo", model);
+        }
+
+        public ActionResult NotLoggedIn()
+        {
+            return View("NotLogged");
         }
     }
 }

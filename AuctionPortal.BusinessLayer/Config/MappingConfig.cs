@@ -38,6 +38,7 @@ namespace AuctionPortal.BusinessLayer.Config
 
             config.CreateMap<UserDto, AuctioneerDto>();
             config.CreateMap<User, AuctioneerDto>();
+            config.CreateMap<UserDto, Auctioneer>();
         }
     }
 }

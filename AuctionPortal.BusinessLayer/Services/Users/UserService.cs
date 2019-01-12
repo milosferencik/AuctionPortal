@@ -37,13 +37,13 @@ namespace AuctionPortal.BusinessLayer.Services.Users
             {
                 throw new ArgumentException("User already exists");
             }
+            
             auctioneer.IsAdmin = false;
-
             var password = CreateHash(entityDto.Password);
             auctioneer.PasswordHash = password.Item1;
             auctioneer.PasswordSalt = password.Item2;
 
-            repository.Create(auctioneer);
+            repository.Create(auctioneer); 
             return auctioneer.Id;
         }
 
@@ -93,7 +93,7 @@ namespace AuctionPortal.BusinessLayer.Services.Users
             {
                 byte[] salt = deriveBytes.Salt;
                 byte[] subkey = deriveBytes.GetBytes(PBKDF2SubkeyLength);
-
+                
                 return Tuple.Create(Convert.ToBase64String(subkey), Convert.ToBase64String(salt));
             }
         }
