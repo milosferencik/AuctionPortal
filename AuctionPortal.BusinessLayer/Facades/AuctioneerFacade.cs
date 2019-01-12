@@ -125,7 +125,7 @@ namespace AuctionPortal.BusinessLayer.Facades
                 /*if (productService.GetAllProductsWithGivenSellerId(auctioneerId) != null)
                 {
                     return false;
-                }*/
+                }*/     //todo
                 //reviewService.DeleteAllReviewsForUser(auctioneerId);
                 var auctioneer = await auctioneerService.GetAuctioneerEntity(auctioneerId);
                 userService.DeleteUser(auctioneer.Id);
