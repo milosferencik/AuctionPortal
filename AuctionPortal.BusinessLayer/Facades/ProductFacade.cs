@@ -80,7 +80,7 @@ namespace AuctionPortal.BusinessLayer.Facades
         public async Task<ProductDto> EvaluateProduct(Guid productId)
         {
             var product = await GetProductAsync(productId); 
-            if(product.ValidTo.Equals(DateTime.Today) && !product.IsSold)
+            if(DateTime.Compare(product.ValidTo, DateTime.Today) <= 0 && !product.IsSold)
             {
                 using (var uow = UnitOfWorkProvider.Create())
                 {
