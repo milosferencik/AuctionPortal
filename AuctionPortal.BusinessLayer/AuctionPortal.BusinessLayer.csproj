@@ -77,6 +77,7 @@
     <Compile Include="DataTransferObjects\ReviewDto.cs" />
     <Compile Include="DataTransferObjects\UserCreateDto.cs" />
     <Compile Include="DataTransferObjects\UserDto.cs" />
+    <Compile Include="DataTransferObjects\AuctioneerListDto.cs" />
     <Compile Include="Facades\AuctioneerFacade.cs" />
     <Compile Include="Facades\Common\FacadeBase.cs" />
     <Compile Include="Facades\ProductFacade.cs" />

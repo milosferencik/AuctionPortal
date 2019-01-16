@@ -26,10 +26,10 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         [MaxLength(65536)]
         public string Info { get; set; }
 
-        //[ForeignKey(nameof(Seller))]
+        [ForeignKey(nameof(Seller))]
         public Guid SellerId { get; set; }
 
-        //public virtual Auctioneer Seller { get; set; }
+        public virtual Auctioneer Seller { get; set; }
 
         //[ForeignKey(nameof(Buyer))]
         public Guid BuyerId { get; set; }
@@ -40,6 +40,8 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         public DateTime ValidTo { get; set; }
 
         public DateTime SoldTime { get; set; } = DateTime.Parse("1/1/1800");
+
+        public bool IsSold { get; set; }
 
         [MaxLength(1024)]
         public string ProductImgUri { get; set; }

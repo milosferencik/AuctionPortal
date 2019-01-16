@@ -1,6 +1,7 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AuctionPortal.BusinessLayer.Services.Bids
@@ -21,12 +22,16 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
         /// <returns> Last bid for product</returns>
         Task<BidDto> GetLastBidForProduct(Guid productId);
 
-        /// <summary>
-        /// Creates new entity
-        /// </summary>
-        /// <param name="entityDto">entity details</param>
-        Guid Create(BidDto entityDto);
+        Task<IOrderedEnumerable<BidDto>> GetBidsForProductOrdered(Guid productId);
 
         Task<IList<BidDto>> GetAllBidsForUser(Guid userId);
+
+        /// <summary>
+        /// Creates new bid
+        /// </summary>
+        /// <param name="entityDto">entity details</param>
+        Guid CreateBid(BidDto entityDto);
+
+        Task DeleteAllBidsForProduct(Guid productId);
     }
 }

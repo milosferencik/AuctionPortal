@@ -20,12 +20,14 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         private const int saltSize = 128 / 8;
 
         private IRepository<Auctioneer> repository;
+        private IRepository<User> repositoryUser;
         private readonly QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject;
 
 
-        public UserService(IMapper mapper, IRepository<Auctioneer> repository, QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject) : base(mapper)
+        public UserService(IMapper mapper, IRepository<Auctioneer> repository, IRepository<User> repositoryUser, QueryObjectBase<UserDto, User, UserFilterDto, IQuery<User>> userQueryObject) : base(mapper)
         {
             this.repository = repository;
+            this.repositoryUser = repositoryUser;
             this.userQueryObject = userQueryObject;
         }
 
@@ -38,7 +40,6 @@ namespace AuctionPortal.BusinessLayer.Services.Users
                 throw new ArgumentException("User already exists");
             }
             
-            auctioneer.IsAdmin = false;
             var password = CreateHash(entityDto.Password);
             auctioneer.PasswordHash = password.Item1;
             auctioneer.PasswordSalt = password.Item2;
@@ -47,14 +48,14 @@ namespace AuctionPortal.BusinessLayer.Services.Users
             return auctioneer.Id;
         }
 
-        public async Task<(bool success, bool isAdmin)> AuthorizeUserAsync(string username, string password)
+        public async Task<(bool success, string roles)> AuthorizeUserAsync(string username, string password)
         {
             var userResult = await userQueryObject.ExecuteQuery(new UserFilterDto { Username = username });
             var user = userResult.Items.SingleOrDefault();
 
             var succ = user != null && VerifyHashedPassword(user.PasswordHash, user.PasswordSalt, password);
-            var isAdmin = user?.IsAdmin?? false;
-            return (succ, isAdmin);
+            var roles = user?.Roles ?? "";
+            return (succ, roles);
 
         }
 
@@ -62,6 +63,15 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         {
             repository.Delete(entityId);
         }
+
+        public async Task ChangeRole(string name, string role)
+        {
+            var userDto = await GetAsync(name);
+            userDto.Roles = role;
+            var entity = Mapper.Map<User>(userDto);
+            repositoryUser.Update(entity);
+        }
+
 
         public async Task<UserDto> GetAsync(string name)
         {

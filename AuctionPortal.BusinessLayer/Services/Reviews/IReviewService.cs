@@ -37,7 +37,7 @@ namespace AuctionPortal.BusinessLayer.Services.Reviews
 
         Task<Review> GetReviewEntity(Guid entityId);
 
-        void DeleteAllReviewsForUser(Guid userId);
+        Task DeleteAllReviewsForUser(Guid userId);
 
         Task<QueryResultDto<ReviewDto, ReviewFilterDto>> ListAllAsync();
 

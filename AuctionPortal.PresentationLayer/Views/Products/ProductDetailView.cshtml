@@ -1,7 +1,7 @@
 ﻿@model AuctionPortal.BusinessLayer.DataTransferObjects.ProductDto
 
 @{
-    ViewBag.Title = "ProductDetailView";
+    ViewBag.Title = "Product detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,62 +15,64 @@
     }
 
     @Html.AntiForgeryToken()
+<div>
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Name:</h5>
+        <h5 class="col-md-6">@Model.Name</h5>
+    </div>
+
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Category:</h5>
+        <h5 class="col-md-6">@Model.Category.Name</h5>
+    </div>
+
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Minimal bid:</h5>
+        <h5 class="col-md-6">@Model.MinimalBid</h5>
+    </div>
+
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Start price:</h5>
+        <h5 class="col-md-6">@Model.StartPrice</h5>
+    </div>
+
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Actual price:</h5>
+        <h5 class="col-md-6">@Model.ActualPrice</h5>
+    </div>
+
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Info:</h5>
+        <h5 class="col-md-6">@Model.Info</h5>
+    </div>
+
+    <div class="row">
+        <h5 class="col-md-2 col-md-offset-1">Availible to:</h5>
+        <h5 class="col-md-6">@Model.ValidTo.ToShortDateString()</h5>
+    </div>
+
     <div>
-        <div class="row">
-            <h5 class="col-md-2 col-md-offset-1">Name:</h5>
-            <h5 class="col-md-6">@Model.Name</h5>
-        </div>
+        <p class="btn btn-default"> @Html.ActionLink("Seller detail", "Details", "User", new { id = Model.SellerId.ToString() }, null) </p>
+    </div>
 
-        <div class="row">
-            <h5 class="col-md-2 col-md-offset-1">Minimal bid:</h5>
-            <h5 class="col-md-6">@Model.MinimalBid</h5>
-        </div>
-
-        <div class="row">
-            <h5 class="col-md-2 col-md-offset-1">Start price:</h5>
-            <h5 class="col-md-6">@Model.StartPrice</h5>
-        </div>
-
-        <div class="row">
-            <h5 class="col-md-2 col-md-offset-1">Actual price:</h5>
-            <h5 class="col-md-6">@Model.ActualPrice</h5>
-        </div>
-
-        <div class="row">
-            <h5 class="col-md-2 col-md-offset-1">Info:</h5>
-            <h5 class="col-md-6">@Model.Info</h5>
-        </div>
-
-        <div class="row">
-            <h5 class="col-md-2 col-md-offset-1">Availible to:</h5>
-            <h5 class="col-md-6">@Model.ValidTo.ToShortDateString()</h5>
-        </div>
-
-        <div>
-            <input type="button" value="seller" @("onclick=GoToDetail('" + Model.SellerId + "')")>
-        </div>
-        <!--category?-->
-
+    @if (Model.IsSold)
+    {
+        <h2>Product is Sold</h2>
+    }
+    else
+    {
         <div class="form-group">
-            @Html.LabelFor(model => model.ActualPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Bid.Price, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ActualPrice, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ActualPrice, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Bid.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Bid.Price, "", new { @class = "text-danger" })
             </div>
             <div class="col-md-offset-2 col-md-20">
                 <input type="submit" value="Create bid" class="btn btn-default" name="action:createBid" />
             </div>
         </div>
-
-        <div>
-            <p class="btn btn-default"> @Html.ActionLink("Back to Homepage", "Index", "Home") </p>
-        </div>
-    </div>
+    }
+</div>
 }
 
-<script>
-    function GoToDetail(id) {
-        window.location = "/User/Details/" + id;
-    }
-</script>
 

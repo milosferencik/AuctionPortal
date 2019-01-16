@@ -35,6 +35,7 @@ namespace AuctionPortal.BusinessLayer.Config
             config.CreateMap<QueryResult<User>, QueryResultDto<UserDto, UserFilterDto>>();
             config.CreateMap<QueryResult<Auctioneer>, QueryResultDto<AuctioneerDto, AuctioneerFilterDto>>();
             config.CreateMap<QueryResult<Bid>, QueryResultDto<BidDto, BidFilterDto>>();
+            config.CreateMap<QueryResult<Review>, QueryResultDto<ReviewDto, ReviewFilterDto>>();
 
             config.CreateMap<UserDto, AuctioneerDto>();
             config.CreateMap<User, AuctioneerDto>();

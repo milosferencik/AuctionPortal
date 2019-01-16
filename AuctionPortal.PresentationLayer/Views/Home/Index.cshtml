@@ -9,13 +9,12 @@
     {
     <div class="jumbotron">
         <p class="lead">
-            <h3>Welcome back to the best auction portal @(User.Identity.Name)! </h3>
+            <h2>Welcome back to the best auction portal @(User.Identity.Name)! </h2>
+            @if (User.IsInRole("admin"))
+            {
+                <h3>You are admin.</h3>
+            }
         </p>
-        <p class="btn btn-default"> @Html.ActionLink("Show my Profile", "ShowMyProfile", "User")  </p>
-        <p class="btn btn-default"> @Html.ActionLink("Create new Product", "CreateNewProduct", "Products")  </p>
-        <p class="btn btn-default"> @Html.ActionLink("Create new category", "Create", "Home")  </p>
-        <p class="btn btn-default"> @Html.ActionLink("Products", "Index", "Products")  </p>
-        <p class="btn btn-default"> @Html.ActionLink("Show Admin Options", "Show", "Admin")  </p>
     </div>
     }
     else

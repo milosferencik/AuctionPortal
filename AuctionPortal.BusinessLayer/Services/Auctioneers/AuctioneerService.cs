@@ -1,4 +1,5 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects;
+using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.QueryObjects.Common;
 using AuctionPortal.BusinessLayer.Services.Common;
@@ -30,6 +31,12 @@ namespace AuctionPortal.BusinessLayer.Services.Auctioneers
         public async Task<Auctioneer> GetAuctioneerEntity(Guid entityId)
         {
             return await Repository.GetAsync(entityId);
+        }
+
+        
+        public async Task<QueryResultDto<AuctioneerDto, AuctioneerFilterDto>> ListAuctioneerAsync(AuctioneerFilterDto filter)
+        {
+            return await Query.ExecuteQuery(filter);
         }
 
         /// <summary>

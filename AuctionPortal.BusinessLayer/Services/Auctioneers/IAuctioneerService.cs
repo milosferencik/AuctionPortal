@@ -55,6 +55,13 @@ namespace AuctionPortal.BusinessLayer.Services.Auctioneers
         /// <returns>all available dtos (for given type)</returns>
         Task<QueryResultDto<AuctioneerDto, AuctioneerFilterDto>> ListAllAsync();
 
+        /// <summary>
+        /// Gets auctioneers according to given filter
+        /// </summary>
+        /// <param name="filter">The products filter</param>
+        /// <returns>Filtered results</returns>
+        Task<QueryResultDto<AuctioneerDto, AuctioneerFilterDto>> ListAuctioneerAsync(AuctioneerFilterDto filter);
+
         Task<AuctioneerDto> GetAuctioneerDtoAsync(Guid id);
     }
 }

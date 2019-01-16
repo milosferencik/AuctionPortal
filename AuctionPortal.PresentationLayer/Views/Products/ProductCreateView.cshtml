@@ -1,9 +1,9 @@
-﻿@model AuctionPortal.BusinessLayer.DataTransferObjects.ProductDto
+﻿@model AuctionPortal.PresentationLayer.Models.CreateProductModel
 @{
-    ViewBag.Title = "ProductCreateView";
+    ViewBag.Title = "New Product";
 }
 
-<h2>ProductCreateView</h2>
+<h2>New product</h2>
 
 @using (Html.BeginForm())
 {
@@ -13,52 +13,94 @@
         Response.Redirect("~/User/NotLoggedIn");
     }
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.MinimalBid, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MinimalBid, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StartPrice, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StartPrice, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Info, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Info, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.ValidTo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ValidTo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ValidTo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product.Name, "", new { @class = "text-danger" })
         </div>
     </div>
-}
-<div>
-    <p class="btn btn-default"> @Html.ActionLink("Back to Homepage", "Index", "Home") </p>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.MinimalBid, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product.MinimalBid, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.StartPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product.StartPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product.StartPrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.Info, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product.Info, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.ValidTo, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Product.ValidTo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Product.ValidTo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="tree panel-body">
+        @for (var i = 0; i < Model.Categories.Count; i++)
+        {
+            if (Model.Categories[i].HasParent)
+            {
+                continue;
+            }
+            <ul>
+                <li>
+                    <a href="#">
+                        @Html.CheckBoxFor(model => model.Categories[i].IsActive, new { @class = "tree-checkbox parent", @id = @Model.Categories[i].Id })
+                        @Html.HiddenFor(model => model.Categories[i].Id)
+                        @Html.HiddenFor(model => model.Categories[i].Name)
+                        @Html.HiddenFor(model => model.Categories[i].ParentId)
+                        <label for=@i>
+                            @Html.DisplayFor(model => model.Categories[i].Name)
+                        </label>
+                    </a>
+                    <ul>
+                        @for (var j = 0; j < Model.Categories.Count; j++)
+                        {
+                            if (!Model.Categories[j].HasParent || Model.Categories[j].ParentId != Model.Categories[i].Id)
+                            {
+                                continue;
+                            }
+                            @Html.HiddenFor(model => model.Categories[j].Id)
+                            @Html.HiddenFor(model => model.Categories[j].Name)
+                            @Html.HiddenFor(model => model.Categories[j].ParentId)
+                            <li>
+                                <a href="#">
+                                    @Html.CheckBoxFor(model => model.Categories[j].IsActive, new { @class = "tree-checkbox node-item", @iid = i + "" + j })
+                                    <label for=@i@j>
+                                        @Html.DisplayFor(model => model.Categories[j].Name)
+                                    </label>
+                                </a>
+                            </li>
+
+                        }
+                    </ul>
+                </li>
+            </ul>
+        }
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" id="btnSubmit" onclick="saveRange()" />
+        </div>
+    </div>
 </div>
+}
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

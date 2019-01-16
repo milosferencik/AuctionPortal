@@ -48,11 +48,11 @@ namespace AuctionPortal.PresentationLayer.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
-            (bool success, bool isAdmin) = await AuctioneerFacade.Login(model.Username, model.Password);
+            (bool success, string roles) = await AuctioneerFacade.Login(model.Username, model.Password);
             if (success)
             {
                 var authTicket = new FormsAuthenticationTicket(1, model.Username, DateTime.Now,
-                    DateTime.Now.AddMinutes(30),false, isAdmin.ToString());
+                    DateTime.Now.AddMinutes(30),false, roles);
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Response.Cookies.Add(authCookie);
@@ -79,14 +79,17 @@ namespace AuctionPortal.PresentationLayer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<ActionResult> BecomeAdmin()
+        public async Task<ActionResult> BecomeAdmin(string name)
         {
-            var name = User.Identity.Name;
-            var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(name);
-            me.IsAdmin = true;
-            await AuctioneerFacade.UpdateAuctioneer(me);
-            return RedirectToAction("Index", "Home");
+            await AuctioneerFacade.ChangeRole(name, "admin");
+            return View("OperationSuccesful");
         }
-        
+
+        public async Task<ActionResult> BecomeNoAdmin(string name)
+        {
+            await AuctioneerFacade.ChangeRole(name, "");
+            return View("OperationSuccesful");
+        }
+
     }
 }

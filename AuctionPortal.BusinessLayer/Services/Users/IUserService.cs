@@ -26,13 +26,19 @@ namespace AuctionPortal.BusinessLayer.Services.Users
         /// <param name="username"> username</param>
         /// <param name="password"> user password</param>
         /// <returns> tuple of bool is successful and is admin </returns>
-        Task<(bool success, bool isAdmin)> AuthorizeUserAsync(string username, string password);
+        Task<(bool success, string roles)> AuthorizeUserAsync(string username, string password);
 
         /// <summary>
         /// Deletes entity with given Id
         /// </summary>
         /// <param name="entityId">Id of the entity to delete</param>
         void DeleteUser(Guid entityId);
+
+        /// <summary>
+        /// Change role in entity with given Id
+        /// </summary>
+        /// <param name="entityId">Id of the entity to delete</param>
+        Task ChangeRole(string name, string role);
 
     }
 }

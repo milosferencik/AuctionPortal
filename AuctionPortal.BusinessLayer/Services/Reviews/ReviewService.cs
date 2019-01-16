@@ -15,7 +15,7 @@ namespace AuctionPortal.BusinessLayer.Services.Reviews
 {
     public class ReviewService : CrudQueryServiceBase<Review, ReviewDto, ReviewFilterDto>, IReviewService
     {
-        public ReviewService(IMapper mapper, QueryObjectBase<ReviewDto, Review, ReviewFilterDto, IQuery<Review>> reviewQuery, IRepository<Review> reviewRepository)
+        public ReviewService(IMapper mapper, IRepository<Review> reviewRepository, QueryObjectBase<ReviewDto, Review, ReviewFilterDto, IQuery<Review>> reviewQuery)
             : base(mapper, reviewRepository, reviewQuery) { }
 
         public async Task<IList<ReviewDto>> GetAllReviewsForUser(Guid reviewedId, bool withIncludes = true)
@@ -34,7 +34,7 @@ namespace AuctionPortal.BusinessLayer.Services.Reviews
             return await Repository.GetAsync(entityId);
         }
 
-        public async void DeleteAllReviewsForUser(Guid userId)
+        public async Task DeleteAllReviewsForUser(Guid userId)
         {
             var reviews = await GetAllReviewsForUser(userId);
             foreach(var review in reviews)

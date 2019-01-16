@@ -2,7 +2,6 @@
 using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.Facades;
-using AuctionPortal.DataAccessLayer.EntityFramework.Entities;
 using AuctionPortal.PresentationLayer.Models;
 using X.PagedList;
 using System;
@@ -18,6 +17,7 @@ namespace AuctionPortal.PresentationLayer.Controllers
     {
         public const int PageSize = 9;
 
+        private const string OtherCategory = "ab01dc64-5c07-40fe-a916-175165b9b90f";
         private const string FilterSessionKey = "filter";
         private const string CategoryTreesSessionKey = "categoryTrees";
 
@@ -28,7 +28,7 @@ namespace AuctionPortal.PresentationLayer.Controllers
         public async Task<ActionResult> Index(ProductListViewModel model)
         {
             model.Filter.PageSize = PageSize;
-            model.Filter.CategoryIds = ProcessCategoryIds(model);
+            model.Filter.CategoryIds = ProcessCategoryIds(model.Categories);
             Session[FilterSessionKey] = model.Filter;
             Session[CategoryTreesSessionKey] = model.Categories;
 
@@ -57,48 +57,66 @@ namespace AuctionPortal.PresentationLayer.Controllers
 
         public async Task<ActionResult> Details(Guid id)
         {
-            var model = await ProductFacade.GetProductAsync(id);
+            var model = await ProductFacade.EvaluateProduct(id);
+            model.Category = await ProductFacade.GetCategoryAsync(model.CategoryId);
             return View("ProductDetailView", model);
         }
 
-        public ActionResult CreateNewProduct()
+        public async Task<ActionResult> CreateNewProduct()
         {
-            return View("ProductCreateView");
+            var categories = await ProductFacade.GetAllCategories(); 
+            var model = new CreateProductModel { Categories = categories.ToList()};
+            return View("ProductCreateView", model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateNewProduct(ProductDto productDto)
+        public async Task<ActionResult> CreateNewProduct(CreateProductModel model)
         {
+            model.Product.CategoryId = ProcessCategoryIds(model.Categories).LastOrDefault();
+            if (model.Product.CategoryId.Equals(Guid.Empty) )
+            {
+                model.Product.CategoryId = Guid.Parse(OtherCategory);
+            }
             var seller = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
-            productDto.SellerId = seller.Id;
-            var prodID = await ProductFacade.CreateProductWithCategoryNameAsync(productDto, "mobily");
-            var product = await ProductFacade.GetProductAsync(prodID);
+            model.Product.SellerId = seller.Id;
+            var prodID = await ProductFacade.CreateProductAsync(model.Product);
+            return RedirectToAction("Details", new { id = prodID });
+        }
 
-            return View("ProductDetailView", product);
+        [HttpGet]
+        [Route("DeleteProduct/{id}")]
+        public async Task<ActionResult> DeleteProduct(Guid id)
+        {
+            await ProductFacade.DeleteProduct(id);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [MultiPostAction(Name = "action", Argument = "createBid")]
         public async Task<ActionResult> CreateBid(ProductDto productDto)
         {
+            var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
+            var product = await ProductFacade.GetProductAsync(productDto.Id);
             var bidDto = new BidDto
             {
-                ProductId = productDto.Id,
-                Price = productDto.ActualPrice.Value,
-                TimeOfBid = DateTime.Now
+                ProductId = product.Id,
+                Product = product,
+                Price = productDto.Bid.Price,
+                TimeOfBid = DateTime.Now,
+                BidderId = me.Id,
+                Bidder = me
             };
-            var me = await AuctioneerFacade.GetAuctioneerAccordingToUsernameAsync(User.Identity.Name);
-            bidDto.BidderId = me.Id;
+            
             try
             {
                await ProductFacade.CreateBidAsync(bidDto);
-            }catch(Exception )
+            }catch(Exception x )
             {
-                return View("Error", new ErrorModel { Message = "Unknown error." });
+                return View("Error", new ErrorModel { Message = x.Message });
             }
-            var product = await ProductFacade.GetProductAsync(productDto.Id);
-            return View("ProductDetailView", product);
+            return RedirectToAction("Details", new { id = productDto.Id });
         }
+
 
         #region Helper methods
 
@@ -124,15 +142,15 @@ namespace AuctionPortal.PresentationLayer.Controllers
         /// </summary>
         /// <param name="model">model containing category trees</param>
         /// <returns>selected categories</returns>
-        private static Guid[] ProcessCategoryIds(ProductListViewModel model)
+        private static Guid[] ProcessCategoryIds(IList<CategoryDto> model)
         {
             var selectedCategoryIds = new List<Guid>();
-            foreach (var categoryTreeRoot in model.Categories)
+            foreach (var categoryTreeRoot in model)
             {
                 if (categoryTreeRoot.IsActive)
                 {
                     selectedCategoryIds.Add(categoryTreeRoot.Id);
-                    selectedCategoryIds.AddRange(model.Categories
+                    selectedCategoryIds.AddRange(model
                         .Where(node => node.ParentId == categoryTreeRoot.Id && node.IsActive)
                         .Select(node => node.Id));
                 }

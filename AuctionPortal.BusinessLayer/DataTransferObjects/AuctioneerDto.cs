@@ -1,5 +1,6 @@
 ﻿using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using System;
+using System.Collections.Generic;
 
 namespace AuctionPortal.BusinessLayer.DataTransferObjects
 {
@@ -23,6 +24,9 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
 
         public double Rating { get; set; }
 
-        public bool IsAdmin { get; set; }
+        //public bool IsAdmin { get; set; }
+        public ReviewDto NevReview { get; set; }
+
+        public IList<ReviewDto> Review { get; set; } = new List<ReviewDto>();
     }
 }

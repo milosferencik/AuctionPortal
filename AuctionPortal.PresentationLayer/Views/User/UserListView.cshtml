@@ -1,0 +1,84 @@
+﻿@using System.Web.Mvc.Html
+@using X.PagedList.Mvc
+@model AuctionPortal.PresentationLayer.Models.AuctioneerListViewModel
+@{
+    ViewBag.Title = "AuctioneerListView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="panel panel-primary col-md-3 col-sm-4 col-xs-12">
+    <div class="panel-heading panel-head">Categories</div>
+    @using (Html.BeginForm())
+    {
+        if (!Request.IsAuthenticated)
+        {
+            Response.Redirect("~/User/NotLoggedIn");
+        }
+
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.Filter.Email, "Auctioneer E-mail", new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Filter.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Filter.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.Filter.SortCriteria, "Sort by:", new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.Filter.SortCriteria, Model.AllSortCriteria, "Select...", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Filter.SortCriteria, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.Filter.SortAscending, "Ascending", new { @class = "control-label col-md-4" })
+            <div class="col-md-5 col-md-offset-3">
+                @Html.CheckBoxFor(model => model.Filter.SortAscending, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Filter.SortAscending, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div>
+                <input type="button" class="btn btn-danger  col-md-offset-1 col-md-4" value="Clear" onclick="resetRange();location.href = '@Url.Action("ClearFilter", "Products")'" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success col-md-offset-1 col-md-5" id="btnSubmit" type="submit" onclick="saveRange()">Filter </button>
+            </div>
+        </div>
+
+    }
+
+    <div class="col-md-12">
+        @Html.PagedListPager(Model.Auctioneers, page => Url.Action("Index", new { page }))
+    </div>
+
+</div>
+
+<div class="panel panel-default col-md-9 col-sm-8 col-xs-12">
+    <ul class="panel-heading panel-head list-group">Available products:</ul>
+    @{foreach (var auctioneer in Model.Auctioneers)
+        {
+            <div class="col-md-4 col-sm-6 col-xs-12 list-group-item-nonclickable thumbnail">
+                <div class="col-md-12  col-sm-12 col-xs-12 clickable-area" @("onclick=GoToDetail('" + auctioneer.Id + "')")>
+
+                    <div class="caption text-center">
+                        <h4 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@auctioneer.FirstName @auctioneer.LastName</h4>
+                    </div>
+                    <div class="caption text-center">
+                        <h5 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@auctioneer.Email</h5>
+                    </div>
+                    <p style="height: 80px; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: normal; text-align: justify;">@auctioneer.Info</p>
+
+                </div>
+            </div>
+        }}
+</div>
+
+
+<script>
+    function GoToDetail(id) {
+        window.location = "/User/Details/" + id;
+    }
+</script>

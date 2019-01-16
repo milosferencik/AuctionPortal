@@ -2,6 +2,7 @@
 using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.Facades.Common;
+using AuctionPortal.BusinessLayer.Services.Auctioneers;
 using AuctionPortal.BusinessLayer.Services.Bids;
 using AuctionPortal.BusinessLayer.Services.Categories;
 using AuctionPortal.BusinessLayer.Services.Products;
@@ -18,12 +19,14 @@ namespace AuctionPortal.BusinessLayer.Facades
         private readonly ICategoryService categoryService;
         private readonly IProductService productService;
         private readonly IBidService bidService;
+        private readonly IAuctioneerService auctioneerService;
 
-        public ProductFacade(IUnitOfWorkProvider unitOfWorkProvider, ICategoryService categoryService, IProductService productService, IBidService bidService) : base(unitOfWorkProvider)
+        public ProductFacade(IUnitOfWorkProvider unitOfWorkProvider, ICategoryService categoryService, IProductService productService, IBidService bidService, IAuctioneerService auctioneerService) : base(unitOfWorkProvider)
         {
             this.productService = productService;
             this.categoryService = categoryService;
             this.bidService = bidService;
+            this.auctioneerService = auctioneerService;
         }
 
         /// <summary>
@@ -74,6 +77,49 @@ namespace AuctionPortal.BusinessLayer.Facades
             }
         }
 
+        public async Task<ProductDto> EvaluateProduct(Guid productId)
+        {
+            var product = await GetProductAsync(productId); 
+            if(product.ValidTo.Equals(DateTime.Today) && !product.IsSold)
+            {
+                using (var uow = UnitOfWorkProvider.Create())
+                {
+                    var bids = await bidService.GetBidsForProductOrdered(productId);
+                    foreach(var bid in bids)
+                    {
+                        var buyer = await auctioneerService.GetAuctioneerDtoAsync(bid.BidderId);
+                        if (buyer.Money >= bid.Price)
+                        {
+                            product.BuyerId = buyer.Id;
+                            buyer.Money = buyer.Money - bid.Price;
+                            await auctioneerService.Update(buyer);
+                            break;
+                        }
+                    }
+                    product.SoldTime = DateTime.Now;
+                    product.IsSold = true;
+                    await productService.Update(product);
+                    await uow.Commit();
+                }
+                return product;
+            }
+            return product;
+        }
+
+        /// <summary>
+        /// Creates product 
+        /// </summary>
+        /// <param name="product">product</param>
+        public async Task<Guid> CreateProductAsync(ProductDto product)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                var productId = productService.Create(product);
+                await uow.Commit();
+                return productId;
+            }
+        }
+
         /// <summary>
         /// Creates product with category that corresponds with given name
         /// </summary>
@@ -108,7 +154,15 @@ namespace AuctionPortal.BusinessLayer.Facades
             }
         }
 
-        //delete?
+        public async Task DeleteProduct(Guid productId)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                productService.DeleteProduct(productId);
+                await bidService.DeleteAllBidsForProduct(productId);
+                await uow.Commit();
+            }
+        }
 
         /// <summary>
         /// Gets category according to ID
@@ -148,20 +202,6 @@ namespace AuctionPortal.BusinessLayer.Facades
             }
         }
 
-        /// <summary>
-        /// gets current price for product
-        /// </summary>
-        /// <param name="id"> product id</param>
-        /// <returns> current price for product</returns>
-        public async Task<decimal> GetCurrentPriceForProduct(Guid id)
-        {
-            using (UnitOfWorkProvider.Create())
-            {
-                var prod = await bidService.GetLastBidForProduct(id);
-                return prod.Price;
-            }
-        }
-
         public async Task CreateCategoryAsync(CategoryDto product)
         {
             using (var uow = UnitOfWorkProvider.Create())
@@ -175,8 +215,22 @@ namespace AuctionPortal.BusinessLayer.Facades
         {
             using (var uow = UnitOfWorkProvider.Create())
             {
-                bidService.Create(bid);
+                bidService.CreateBid(bid);
                 await uow.Commit();
+            }
+        }
+
+        /// <summary>
+        /// gets current price for product
+        /// </summary>
+        /// <param name="id"> product id</param>
+        /// <returns> current price for product</returns>
+        public async Task<decimal> GetCurrentPriceForProduct(Guid id)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                var prod = await bidService.GetLastBidForProduct(id);
+                return prod.Price;
             }
         }
 

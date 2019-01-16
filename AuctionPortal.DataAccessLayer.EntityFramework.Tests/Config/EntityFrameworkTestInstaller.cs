@@ -52,7 +52,7 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Tests.Config
             var iOS = new Category { Id = Guid.Parse("aa04dc64-5c07-40fe-a916-175165b9b90f"), Name = "iOS", Parent = smartphones, ParentId = smartphones.Id };
 
             context.Categories.AddOrUpdate(category => category.Id, smartphones, android, iOS);
-            var ja = new Auctioneer { Id = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b988"), Username = "milos", IsAdmin = "no", PasswordSalt = "ano", PasswordHash = "ano", Money = Decimal.One };
+            var ja = new Auctioneer { Id = Guid.Parse("aa01dc64-5c07-40fe-a916-175165b9b988"), Username = "milos", Roles = "", PasswordSalt = "ano", PasswordHash = "ano", Money = Decimal.One };
             context.Auctioneers.Add(ja);
             var samsungGalaxyJ7 = new Product
             {

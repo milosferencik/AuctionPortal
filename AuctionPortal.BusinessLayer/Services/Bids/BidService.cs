@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AuctionPortal.BusinessLayer.DataTransferObjects;
+using AuctionPortal.BusinessLayer.DataTransferObjects.Common;
 using AuctionPortal.BusinessLayer.DataTransferObjects.Filters;
 using AuctionPortal.BusinessLayer.QueryObjects.Common;
 using AuctionPortal.BusinessLayer.Services.Common;
@@ -23,17 +24,18 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
             return await Repository.GetAsync(entityId);
         }
 
-        public override Guid Create(BidDto entityDto)
+        public Guid CreateBid(BidDto entityDto)
         {
-            /*var price = GetLastBidForProduct(entityDto.ProductId)?.Result.Price ?? entityDto.Product.StartPrice;
-            if (price + entityDto.Product.MinimalBid > entityDto.Price)
+            //var bid = await GetLastBidForProduct(entityDto.ProductId);
+            //var price =bid?.Price ?? entityDto.Product.StartPrice;
+            if (entityDto.Product.ActualPrice + entityDto.Product.MinimalBid > entityDto.Price)
             {
                 throw new ArgumentException("Bid is to small!");
-            }*/
-            /*if (entityDto.Bidder.Money < entityDto.Price)
+            }
+            if (entityDto.Bidder.Money < entityDto.Price)
             {
                 throw new ArgumentException("Don't enough money!");
-            }*/ //todo
+            } 
             var entity = Mapper.Map<Bid>(entityDto);
             Repository.Create(entity);
             return entity.Id;
@@ -42,8 +44,14 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
 
         public async Task<BidDto> GetLastBidForProduct(Guid productId)
         {
-            var queryResult = await Query.ExecuteQuery(new BidFilterDto { ProductId = productId });
+            var queryResult = await Query.ExecuteQuery(new BidFilterDto { ProductId = productId});
             return queryResult.Items.OrderByDescending(bid => bid.Price).FirstOrDefault();
+        }
+
+        public async Task<IOrderedEnumerable<BidDto>> GetBidsForProductOrdered(Guid productId)
+        {
+            var queryResult = await Query.ExecuteQuery(new BidFilterDto { ProductId = productId });
+            return queryResult.Items.OrderByDescending(bid => bid.Price);
         }
 
         public override void DeleteProduct(Guid entityId)
@@ -55,6 +63,15 @@ namespace AuctionPortal.BusinessLayer.Services.Bids
         {
             var queryResult = await Query.ExecuteQuery(new BidFilterDto { AuctioneerId = userId });
             return queryResult.Items.ToList();
+        }
+
+        public async Task DeleteAllBidsForProduct(Guid productId)
+        {
+            var queryResult = await Query.ExecuteQuery(new BidFilterDto { ProductId = productId });
+            foreach(var item in queryResult.Items)
+            {
+                Repository.Delete(item.Id);
+            }
         }
     }
 }
