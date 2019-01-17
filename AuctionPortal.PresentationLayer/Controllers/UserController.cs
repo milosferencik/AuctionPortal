@@ -114,6 +114,25 @@ namespace AuctionPortal.PresentationLayer.Controllers
             return View("UserInfo", model);
         }
 
+        // Chybne presmerovanie, treba vyriesit
+        public ActionResult SoldProducts(Guid id)
+        {
+            var model = new ProductListViewModel { Filter = new ProductFilterDto { SellerId = id, IsSold = true, PageSize = 9 } };
+            return RedirectToAction("ShowProducts", "Products", model);
+        }
+
+        public ActionResult ActualProducts(Guid id)
+        {
+            var model = new ProductListViewModel { Filter = new ProductFilterDto { SellerId = id, IsSold = false, PageSize = 9 } };
+            return RedirectToAction("ShowProducts", "Products", new { model = model });
+        }
+
+        public ActionResult BoughtProducts(Guid id)
+        {
+            var model = new ProductListViewModel { Filter = new ProductFilterDto { BuyerID = id, IsSold = true, PageSize = 9 } };
+            return RedirectToAction("ShowProducts", "Products", new { model = model });
+        }
+
         public ActionResult NotLoggedIn()
         {
             return View("NotLogged");

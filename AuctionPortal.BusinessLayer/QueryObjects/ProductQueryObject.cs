@@ -6,6 +6,7 @@ using AuctionPortal.Infrastructure.Query;
 using AuctionPortal.Infrastructure.Query.Predicates;
 using AuctionPortal.Infrastructure.Query.Predicates.Operators;
 using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +21,9 @@ namespace AuctionPortal.BusinessLayer.QueryObjects
             var definedPredicates = new List<IPredicate>();
             AddIfDefined(FilterCategories(filter), definedPredicates);
             AddIfDefined(FilterProductName(filter), definedPredicates);
+            AddIfDefined(FilterSellerId(filter), definedPredicates);
+            AddIfDefined(FilterBuyerId(filter), definedPredicates);
+            AddIfDefined(FilterIsSold(filter), definedPredicates);
             if (definedPredicates.Count == 0)
             {
                 return query;
@@ -62,6 +66,33 @@ namespace AuctionPortal.BusinessLayer.QueryObjects
             }
             return new SimplePredicate(nameof(Product.Name), ValueComparingOperator.StringContains,
                 filter.SearchedName);
+        }
+
+        private static SimplePredicate FilterSellerId(ProductFilterDto filter)
+        {
+            if (filter.SellerId.Equals(Guid.Empty))
+            {
+                return null;
+            }
+            return new SimplePredicate(nameof(Product.SellerId), ValueComparingOperator.Equal, filter.SellerId);
+        }
+
+        private static SimplePredicate FilterBuyerId(ProductFilterDto filter)
+        {
+            if (filter.BuyerID.Equals(Guid.Empty))
+            {
+                return null;
+            }
+            return new SimplePredicate(nameof(Product.BuyerId), ValueComparingOperator.Equal, filter.BuyerID);
+        }
+
+        private static SimplePredicate FilterIsSold(ProductFilterDto filter)
+        {
+            if (filter.IsSold.Equals(null))
+            {
+                return null;
+            }
+            return new SimplePredicate(nameof(Product.IsSold), ValueComparingOperator.Equal, filter.IsSold);
         }
     }
 }

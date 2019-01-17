@@ -16,6 +16,10 @@ namespace AuctionPortal.PresentationLayer.Models
 
         public ProductFilterDto Filter { get; set; }
 
+        public string Offer { get; set; }
+
+        public string Status { get; set; }
+
         public SelectList AllSortCriteria => new SelectList(ProductSortCriteria);
     }
 }

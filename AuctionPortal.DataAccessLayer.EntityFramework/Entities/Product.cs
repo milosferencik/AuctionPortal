@@ -37,9 +37,9 @@ namespace AuctionPortal.DataAccessLayer.EntityFramework.Entities
         //public virtual Auctioneer Buyer { get; set; }
         
         [Required]
-        public DateTime ValidTo { get; set; }
+        public DateTime ValidTo { get; set; } 
 
-        public DateTime SoldTime { get; set; } = DateTime.Parse("1/1/1800");
+        public DateTime? SoldTime { get; set; } 
 
         public bool IsSold { get; set; }
 

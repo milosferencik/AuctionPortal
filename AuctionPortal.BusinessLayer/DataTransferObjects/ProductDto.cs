@@ -27,7 +27,7 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects
         [Required(ErrorMessage = "Date is required!")]
         public DateTime ValidTo { get; set; }
 
-        public DateTime SoldTime { get; set; }
+        public DateTime? SoldTime { get; set; }
 
         public bool IsSold { get; set; }
 

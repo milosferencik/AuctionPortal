@@ -29,6 +29,10 @@ namespace AuctionPortal.PresentationLayer.Controllers
         {
             model.Filter.PageSize = PageSize;
             model.Filter.CategoryIds = ProcessCategoryIds(model.Categories);
+            if (model.Offer != null)
+            {
+                model.Filter.IsSold = (model.Offer.Equals("Sold")) ? true : false;
+            }
             Session[FilterSessionKey] = model.Filter;
             Session[CategoryTreesSessionKey] = model.Categories;
 
@@ -46,6 +50,33 @@ namespace AuctionPortal.PresentationLayer.Controllers
             var categoryTrees = Session[CategoryTreesSessionKey] as IList<CategoryDto>;
             var model = await InitializeProductListViewModel(result, categoryTrees);
             return View("ProductListView", model);
+        }
+
+        public async Task<ActionResult> SoldProducts(Guid id)
+        {
+            var filter = new ProductFilterDto { SellerId = id, IsSold = true, PageSize = 9 } ;
+            var result = await ProductFacade.GetProductsAsync(filter);
+            var newModel = await InitializeProductListViewModel(result);
+            newModel.Status = "Sold Products";
+            return View("ProductListView", newModel);
+        }
+
+        public async Task<ActionResult> ActualProducts(Guid id)
+        {
+            var model = new ProductListViewModel { Filter = new ProductFilterDto { SellerId = id, IsSold = false, PageSize = 9 } };
+            var result = await ProductFacade.GetProductsAsync(model.Filter);
+            var newModel = await InitializeProductListViewModel(result);
+            newModel.Status = "Actual Offered Products";
+            return View("ProductListView", newModel);
+        }
+
+        public async Task<ActionResult> BoughtProducts(Guid id)
+        {
+            var model = new ProductListViewModel { Filter = new ProductFilterDto { BuyerID = id, IsSold = true, PageSize = 9 } };
+            var result = await ProductFacade.GetProductsAsync(model.Filter);
+            var newModel = await InitializeProductListViewModel(result);
+            newModel.Status = "Bought Products";
+            return View("ProductListView", newModel);
         }
 
         public ActionResult ClearFilter()

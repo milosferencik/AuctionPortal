@@ -43,7 +43,7 @@
         </div>
 
         @if (Model.UserName.Equals(User.Identity.Name))
-        {
+         {
             <div class="row">
                 <h5 class="col-md-2 col-md-offset-1">Birth date:</h5>
                 <h5 class="col-md-6">@Model.BirthDate.ToShortDateString()</h5>
@@ -53,7 +53,16 @@
                 <h5 class="col-md-2 col-md-offset-1">Availible money:</h5>
                 <h5 class="col-md-6">@Model.Money</h5>
             </div>
+         }
 
+        <div>
+            <p class="btn btn-default"> @Html.ActionLink("Sold Products", "SoldProducts", "Products", new { id = Model.Id }, null) </p>
+            <p class="btn btn-default"> @Html.ActionLink("Actual Products", "ActualProducts", "Products", new { id = Model.Id }, null) </p>
+            <p class="btn btn-default"> @Html.ActionLink("Bought Products", "BoughtProducts", "Products", new { id = Model.Id }, null) </p>
+        </div>
+
+        @if (Model.UserName.Equals(User.Identity.Name))
+        {
             <div class="form-group">
                 @Html.LabelFor(model => model.Money, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-20">
@@ -73,24 +82,25 @@
                     <input type="submit" value="AddInfo" class="btn btn-default" name="action:addinfo" />
                 </div>
             </div>
-           
+
         }
         else
         {
-            <div>
-                @if (User.IsInRole("admin"))
-                {
+            if (User.IsInRole("admin"))
+            {
+                <div>
+                    <p>Admin abilities</p>
                     <p class="btn btn-default"> @Html.ActionLink("Delete Auctioneer", "DeleteAuctioneer", new { id = Model.Id.ToString() }) </p>
                     <p class="btn btn-default">@Html.ActionLink("Make him Admin", "BecomeAdmin", "Account", new { name = Model.UserName }, null)</p>
                     <p class="btn btn-default">@Html.ActionLink("Make him no Admin", "BecomeNoAdmin", "Account", new { name = Model.UserName }, null)</p>
-                }
-            </div>
-        
+                </div>
+            }
+
             <div class="form-group">
                 @Html.LabelFor(model => model.NevReview.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownListFor(model => model.NevReview.Rating, new SelectList(new List<int>() { 1, 2, 3, 4, 5 }), "0", new { @class = "form-control" })
-                
+
                 </div>
                 @Html.LabelFor(model => model.NevReview.Info, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -101,13 +111,13 @@
                     <input type="submit" value="Create review" class="btn btn-default" name="action:createReview" />
                 </div>
             </div>
-        
+
             <div class="panel panel-default col-md-9 col-sm-8 col-xs-12">
                 <ul class="panel-heading panel-head list-group">Reviews:</ul>
                 @{foreach (var review in Model.Review)
                     {
                         <div class="col-md-4 col-sm-6 col-xs-12 list-group-item-nonclickable thumbnail">
-                            <div class="col-md-12  col-sm-12 col-xs-12")>
+                            <div class="col-md-12  col-sm-12 col-xs-12" )>
 
                                 <div class="caption text-center">
                                     <h4 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@review.Reviewer.FirstName @review.Reviewer.LastName</h4>

@@ -12,5 +12,9 @@ namespace AuctionPortal.BusinessLayer.DataTransferObjects.Filters
         public string SearchedName { get; set; }
 
         public Guid SellerId { get; set; }
+
+        public Guid BuyerID { get; set; }
+
+        public bool? IsSold { get; set; }
     }
 }
